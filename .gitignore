@@ -1,0 +1,11 @@
+MANIFEST
+docs/_build
+build
+dist
+env
+.tox
+*.egg-info
+*.pyc
+*.pyo
+*.so
+.idea/
