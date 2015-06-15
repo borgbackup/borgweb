@@ -20,11 +20,13 @@
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     </head>
     <body>
-    
-    
-        {% include '_nav.html' %}
+        <div class="container">
         
-        {% block content %}{% endblock %}
+            {% include '_nav.html' %}
+            
+            {% block content %}{% endblock %}
+        
+        </div><!-- /container -->
     </body>
 </html>
 
