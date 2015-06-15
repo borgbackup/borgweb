@@ -52,5 +52,7 @@ setup(
     packages=['borgweb', 'borgweb._tests'],
     scripts=['scripts/borgweb'],
     cmdclass=cmdclass,
-    install_requires=[],
+    install_requires=[
+        'flask',
+    ],
 )
