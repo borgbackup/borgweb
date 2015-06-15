@@ -1,6 +1,25 @@
-<html>
-<body>
-{% block content %}{% endblock %}
-</body>
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>{{ title }}</title>
+        
+        <meta charset='UTF-16'>
+        <meta name='description' content='Borg is a deduplicating backup program. This is the web frontend.'>
+        <meta name='author' content='https://github.com/borgbackup/borgweb/blob/master/AUTHORS'>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet">
+    </head>
+    <body>
+    
+    
+        {% include '_nav.html' %}
+        
+        {% block content %}{% endblock %}
+        
+        
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    </body>
 </html>
 
