@@ -8,13 +8,16 @@
         <meta name="author" content="https://github.com/borgbackup/borgweb/blob/master/AUTHORS">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet">
         <style type="text/css">
             body {
                 padding-top: 66px;
             }
         </style>
+
+        <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     </head>
     <body>
     
@@ -22,10 +25,6 @@
         {% include '_nav.html' %}
         
         {% block content %}{% endblock %}
-        
-        
-        <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     </body>
 </html>
 
