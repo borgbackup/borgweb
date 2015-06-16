@@ -9,7 +9,7 @@ def _get_logs():
     log_dir = current_app.config['LOG_DIR']
     log_dir = os.path.abspath(log_dir)
     log_files = os.listdir(log_dir)
-    return log_dir, sorted(log_files)
+    return log_dir, sorted(log_files, reverse=True)
 
 @lru_cache(maxsize=4)
 def _get_all_log_lines(log_dir, log_file):
