@@ -1,3 +1,7 @@
+"""
+main view
+"""
+
 import os
 from functools import lru_cache
 
@@ -8,8 +12,12 @@ from . import blueprint
 def _get_logs():
     log_dir = current_app.config['LOG_DIR']
     log_dir = os.path.abspath(log_dir)
-    log_files = os.listdir(log_dir)
-    return log_dir, sorted(log_files)
+    try:
+        log_files = os.listdir(log_dir)
+    except OSError:
+        log_files = []
+    return log_dir, sorted(log_files, reverse=True)
+
 
 @lru_cache(maxsize=4)
 def _get_all_log_lines(log_dir, log_file):
@@ -42,6 +50,7 @@ def get_log_fragment(index, start, end):
     log_content = ''.join(log_lines)
     return jsonify(dict(log_file=log_file,
                         log_content=log_content))
+
 
 @blueprint.route('/logs/<int:index>')
 def get_log(index):
