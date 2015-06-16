@@ -3,5 +3,8 @@ body {
 }
 
 #log-files {
-  font-size: 18px;
+    font-size: 18px;
+}
+#log-text {
+    white-space: pre-wrap;
 }
