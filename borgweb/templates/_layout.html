@@ -3,23 +3,30 @@
     <head>
         <title>{{ title }}</title>
         
-        <meta charset='UTF-8'>
-        <meta name='description' content='`borgweb` is a web frontend for the `borgbackup` software.'>
-        <meta name='author' content='https://github.com/borgbackup/borgweb/blob/master/AUTHORS'>
+        <meta charset="UTF-8">
+        <meta name="description" content="`borgweb` is a web frontend for the `borgbackup` software.">
+        <meta name="author" content="https://github.com/borgbackup/borgweb/blob/master/AUTHORS">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet">
+        <style type="text/css">
+            body {
+                padding-top: 66px;
+            }
+        </style>
+
+        <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     </head>
     <body>
-    
-    
-        {% include '_nav.html' %}
+        <div class="container">
         
-        {% block content %}{% endblock %}
+            {% include '_nav.html' %}
+            
+            {% block content %}{% endblock %}
         
-        
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        </div><!-- /container -->
     </body>
 </html>
 
