@@ -54,6 +54,19 @@ var updateShownLogFile = function (that) {
 var displayThatLog = function (that) {
   updateShownLogFile(that)
 }
+var isBackupRunning = function () {
+  $.getJSON('/backup/status', function (resp) {
+    if (resp.rc === -1) {
+      console.log('No backup in progress')
+      startBackup(true)
+    } else console.log('Backup in progress') })
+}
+var startBackup = function (force) {
+  if (force) {
+    console.log("Sending backup start request")
+    $.post('/backup/start', {}, function () {})
+  } else isBackupRunning()
+}
 
 $.getJSON('/logs', updateLogFileList)
 updateShownLogFile()
