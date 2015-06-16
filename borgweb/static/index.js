@@ -32,7 +32,7 @@ var renderLogFile = function (text) {
   console.log("Rendering: " + text.log_file)
   $('#log-text').html(text.log_content)
 }
-var highlightLog = function (logNumber) {
+var highlightLogFile = function (logNumber) {
   if (isInt(lastSelectedLog))
     $('#log-files li:nth-child('
       + (lastSelectedLog + 1) + ')').toggleClass('active')
@@ -49,7 +49,7 @@ var updateShownLogFile = function (that) {
     logNumber = anchor['log']
   } else logNumber = that
   
-  highlightLog(logNumber)
+  highlightLogFile(logNumber)
   var url = '/logs/' + logNumber + '/0::'
   console.log("Fetching " + url)
   $.getJSON(url, renderLogFile)
@@ -59,10 +59,12 @@ var displayThatLog = function (that) {
 }
 var isBackupRunning = function () {
   $.getJSON('/backup/status', function (resp) {
-    if (! resp.rc === NaN) {
+    if (resp.rc === null) console.log('Backup in progress')
+    else {
       console.log('No backup in progress')
       startBackup(true)
-    } else console.log('Backup in progress') })
+    }
+  }
 }
 var startBackup = function (force) {
   if (force) {
