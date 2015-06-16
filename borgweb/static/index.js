@@ -64,7 +64,7 @@ var isBackupRunning = function () {
       console.log('No backup in progress')
       startBackup(true)
     }
-  }
+  })
 }
 var startBackup = function (force) {
   if (force) {
