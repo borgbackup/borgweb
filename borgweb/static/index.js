@@ -1,6 +1,10 @@
 var logFilesList = []
 var logFilesListHTML = ""
+var lastSelectedLog = NaN
 
+var isInt = function (n) {
+  return n % 1 === 0
+}
 var success = function (data) {
   logFiles = data.log_files
 }
@@ -16,7 +20,7 @@ var parseAnchor = function () {
       partsParsed[pair[0]] = pair[1]
     })
     return partsParsed
-  }
+  } else return {'log': 0}
 }
 var updateLogFileList = function (logFiles) {
   $.each(logFiles.log_files, function (key, value) {
@@ -28,31 +32,27 @@ var renderLogFile = function (text) {
   console.log("Rendering: " + text.log_file)
   $('#log-text').html(text.log_content)
 }
-var updateShownLogFile = function () {
-  console.log('updateShownLogFile')
-  var anchor = parseAnchor()
-  if (anchor) {
-    var url = '/logs/' + anchor['log'] + '/0::'
-    console.log("Fetching " + url)
-    $.getJSON(url, renderLogFile)
-    console.log(anchor['log'])
-    /* Not working:
-    $(document).ready(function () {
-      $('#log-files li:nth-child('
-        + anchor['log'] + ')').toggleClass('active') })
-    */
-  } else {
-    var url = '/logs/0/0::'
-    console.log("Fetching " + url)
-    $.getJSON(url, renderLogFile)
-    $(document).ready(function () {
-      $('#log-files li').first().toggleClass('active') })
-  }
-}
-var displayThatLog = function (that) {
-  var url = '/logs/' + that + '/0::'
+var updateShownLogFile = function (that) {
+  console.log("updateShownLogFile")
+  var logNumber = NaN
+  if (!isInt(that)) {
+    var anchor = parseAnchor()
+    logNumber = anchor['log']
+  } else logNumber = that
+  
+  if (isInt(lastSelectedLog))
+    $('#log-files li:nth-child('
+      + (lastSelectedLog + 1) + ')').toggleClass('active')
+  $(document).ready(function() {
+    $('#log-files li:nth-child('
+      + (logNumber + 1) + ')').toggleClass('active') })
+  lastSelectedLog = logNumber
+  var url = '/logs/' + logNumber + '/0::'
   console.log("Fetching " + url)
   $.getJSON(url, renderLogFile)
+}
+var displayThatLog = function (that) {
+  updateShownLogFile(that)
 }
 
 $.getJSON('/logs', updateLogFileList)
