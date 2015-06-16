@@ -12,7 +12,10 @@ from . import blueprint
 def _get_logs():
     log_dir = current_app.config['LOG_DIR']
     log_dir = os.path.abspath(log_dir)
-    log_files = os.listdir(log_dir)
+    try:
+        log_files = os.listdir(log_dir)
+    except OSError:
+        log_files = []
     return log_dir, sorted(log_files, reverse=True)
 
 
