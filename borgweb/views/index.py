@@ -14,7 +14,7 @@ from . import blueprint
 process = None
 
 
-@blueprint.route('/backup/start')
+@blueprint.route('/backup/start', methods=['POST'])
 def backup_start():
     env = dict(current_app.config)
     now = time.time()
@@ -48,7 +48,7 @@ def backup_rc():
     return jsonify(dict(msg=msg, rc=rc))
 
 
-@blueprint.route('/backup/stop')
+@blueprint.route('/backup/stop', methods=['POST'])
 def backup_stop():
     global process
     if process is None:
