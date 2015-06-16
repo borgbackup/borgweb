@@ -29,11 +29,24 @@ var renderLogFile = function (text) {
   $('#log-text').html(text.log_content)
 }
 var updateShownLogFile = function () {
+  console.log('updateShownLogFile')
   var anchor = parseAnchor()
   if (anchor) {
     var url = '/logs/' + anchor['log'] + '/0::'
     console.log("Fetching " + url)
     $.getJSON(url, renderLogFile)
+    console.log(anchor['log'])
+    /* Not working:
+    $(document).ready(function () {
+      $('#log-files li:nth-child('
+        + anchor['log'] + ')').toggleClass('active') })
+    */
+  } else {
+    var url = '/logs/0/0::'
+    console.log("Fetching " + url)
+    $.getJSON(url, renderLogFile)
+    $(document).ready(function () {
+      $('#log-files li').first().toggleClass('active') })
   }
 }
 var displayThatLog = function (that) {
