@@ -3,4 +3,7 @@ class Config(object):
 
     #: log file directory
     LOG_DIR = 'logs'
+    REPOSITORY = 'repo'
+    NAME = 'localhost'
+    BACKUP_CMD = "borg create -v {REPOSITORY}::{NAME}-{UTC} ~/w >{LOG_DIR}/{NAME}-{UTC} 2>&1"
 
