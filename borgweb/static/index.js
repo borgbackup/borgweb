@@ -20,7 +20,7 @@ var parseAnchor = function () {
 }
 var updateLogFileList = function (logFiles) {
   $.each(logFiles.log_files, function (key, value) {
-    logFilesListHTML += '<li><a href="#log:' + value[0] + ' onClick="displayThatLog('
+    logFilesListHTML += '<li><a href="#log:' + value[0] + '" onClick="displayThatLog('
       + value[0] + ')">' + value[1] + '</a></li>'})
   $('#log-files').html(logFilesListHTML)
 }
