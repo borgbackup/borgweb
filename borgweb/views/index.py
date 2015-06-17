@@ -27,11 +27,10 @@ def backup_start():
     if process is None or process.returncode is not None:
         # no process ever run or process has terminated
         process = subprocess.Popen(cmd, shell=True, stdin=None, stdout=None, stderr=None)
-        pid = process.pid
-        msg = "started, pid=%d" % pid
+        msg = "started, pid=%d" % process.id
     else:
         msg = "already running"
-    return jsonify(dict(msg=msg, pid=pid))
+    return jsonify(dict(msg=msg, pid=process.id))
 
 
 @blueprint.route('/backup/status')
