@@ -1,7 +1,24 @@
-var logFilesList = []
-var logFilesListHTML = ""
-var lastSelectedLog = NaN
+var dateformat = require('dateformat')
 
+/**
+  ~~ Config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+var cfg = {
+  'logFilesList': [],
+  'logFilesListHTML': "",
+  'lastSelectedLog': NaN
+}
+
+/**
+  ~~ Utility ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+var log = function(){
+  var args = Array.prototype.slice.call(arguments)
+  var time = '[' + dateformat(new Date(), 'HH:MM:ss') + ']'
+  args.unshift(time)
+  console.log.apply(console, args);
+  return this
+}
 var isInt = function (n) {
   return n % 1 === 0
 }
@@ -22,27 +39,32 @@ var parseAnchor = function () {
     return partsParsed
   } else return {'log': 0}
 }
+
+/**
+  ~~ UI updaters ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 var updateLogFileList = function (logFiles) {
   $.each(logFiles.log_files, function (key, value) {
-    logFilesListHTML += '<li><a href="#log:' + value[0] + '" onClick="displayThatLog('
+    cfg.logFilesListHTML += '<li><a href="#log:' + value[0]
+      + '" onClick="window.displayThatLog('
       + value[0] + ')">' + value[1] + '</a></li>'})
-  $('#log-files').html(logFilesListHTML)
+  $('#log-files').html(cfg.logFilesListHTML)
 }
 var renderLogFile = function (text) {
-  console.log("Rendering: " + text.log_file)
+  log("Rendering: " + text.log_file)
   $('#log-text').html(text.log_content)
 }
 var highlightLogFile = function (logNumber) {
-  if (isInt(lastSelectedLog))
+  if (isInt(cfg.lastSelectedLog))
     $('#log-files li:nth-child('
-      + (lastSelectedLog + 1) + ')').toggleClass('active')
+      + (cfg.lastSelectedLog + 1) + ')').toggleClass('active')
   $(document).ready(function() {
     $('#log-files li:nth-child('
       + (logNumber + 1) + ')').toggleClass('active') })
-  lastSelectedLog = logNumber
+  cfg.lastSelectedLog = logNumber
 }
 var updateShownLogFile = function (that) {
-  console.log("updateShownLogFile")
+  log("updateShownLogFile")
   var logNumber = NaN
   if (!isInt(that)) {
     var anchor = parseAnchor()
@@ -51,27 +73,43 @@ var updateShownLogFile = function (that) {
   
   highlightLogFile(logNumber)
   var url = '/logs/' + logNumber + '/0::'
-  console.log("Fetching " + url)
+  log("Fetching " + url)
   $.getJSON(url, renderLogFile)
 }
-var displayThatLog = function (that) {
-  updateShownLogFile(that)
-}
+
+/**
+  ~~ BorgBackup interaction ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 var isBackupRunning = function () {
   $.getJSON('/backup/status', function (resp) {
-    if (resp.rc === null) console.log('Backup in progress')
+    if (resp.rc === null) log('Backup in progress')
     else {
-      console.log('No backup in progress')
+      log('No backup in progress')
       startBackup(true)
     }
   })
 }
 var startBackup = function (force) {
   if (force) {
-    console.log("Sending backup start request")
+    log("Sending backup start request")
     $.post('/backup/start', {}, function () {})
   } else isBackupRunning()
 }
 
+/**
+  ~~ UI callables ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+window.displayThatLog = function (that) {
+  updateShownLogFile(that)
+}
+
+/**
+  ~~ Site init ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 $.getJSON('/logs', updateLogFileList)
 updateShownLogFile()
+
+
+
+
+
