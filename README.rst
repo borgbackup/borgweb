@@ -21,3 +21,11 @@ Main features
   * review backup log files
   * start a backup
 
+Develop JS
+~~~~~~~~~~
+#. Have NodeJS/io.js and NPM installed.
+#. ``git clone https://github.com/borgbackup/borgweb.git``
+#. ``cd borgweb/js``
+#. ``npm install``
+#. ``gulp watch``
+#. Edit JS files within ``js/``; files will automatically be bundle into ``borgweb/static/bundle.js``
