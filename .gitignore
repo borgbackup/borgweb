@@ -9,3 +9,6 @@ env
 *.pyo
 *.so
 .idea/
+js/node_modules
+logs
+repo
