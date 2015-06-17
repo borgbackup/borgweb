@@ -1,0 +1,34 @@
+{
+  "name": "borgweb",
+  "version": "0.0.1",
+  "description": "BorgWeb is a browser-based user interface for Borg Backup.",
+  "main": "static/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/borgbackup/borgweb.git"
+  },
+  "keywords": [
+    "borg",
+    "borgbackup",
+    "attic",
+    "backup",
+    "logviewer"
+  ],
+  "author": "https://github.com/borgbackup/borgweb/blob/master/AUTHORS",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/borgbackup/borgweb/issues"
+  },
+  "homepage": "https://github.com/borgbackup/borgweb#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-util": "^3.0.5",
+    "browserify": "^10.2.4",
+    "prependify": "^1.1.4",
+    "babelify": "^6.1.2",
+    "dateformat": "^1.0.11"
+  }
+}
