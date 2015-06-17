@@ -9,6 +9,6 @@ env
 *.pyo
 *.so
 .idea/
-borgweb/node_modules
+js/node_modules
 logs
 repo
