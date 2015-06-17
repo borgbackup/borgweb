@@ -2,7 +2,8 @@
 
 Welcome to BorgWeb
 ==================
-|project_name| is a browser-based user interface for BorgBackup.
+
+|project_name| is a browser-based user interface for |project_name_backup|.
 
 User's Guide
 ============
@@ -10,9 +11,7 @@ User's Guide
 .. toctree::
    :maxdepth: 2
 
-   foreword
    installation
-   quickstart
    usage
    faq
    internals
