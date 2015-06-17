@@ -39,6 +39,10 @@ var parseAnchor = function () {
     return partsParsed
   } else return {'log': 0}
 }
+var pollCycle = function (endpoint, ms, callback, state) {
+  updateShownLogFile()
+  setTimeout(ms, pollCycle(endpoint, ms, callback, state))
+}
 
 /**
   ~~ UI updaters ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,7 +96,9 @@ var isBackupRunning = function () {
 var startBackup = function (force) {
   if (force) {
     log("Sending backup start request")
-    $.post('/backup/start', {}, function () {})
+    $.post('/backup/start', {}, function () {
+    
+    })
   } else isBackupRunning()
 }
 
@@ -102,6 +108,7 @@ var startBackup = function (force) {
 window.displayThatLog = function (that) {
   updateShownLogFile(that)
 }
+window.startBackup = startBackup
 
 /**
   ~~ Site init ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
