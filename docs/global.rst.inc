@@ -1,5 +1,6 @@
 .. highlight:: bash
 .. |project_name| replace:: ``BorgWeb``
+.. |project_name_backup| replace:: ``BorgBackup``
 .. |package_dirname| replace:: borgweb-|version|
 .. |package_filename| replace:: |package_dirname|.tar.gz
 .. |package_url| replace:: https://pypi.python.org/packages/source/b/borgweb/|package_filename|
