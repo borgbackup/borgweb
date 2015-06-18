@@ -47,7 +47,10 @@ var startBackup = function (force) {
           log("Received status update")
         }) })
   } else if (force === undefined) noBackupRunning(startBackup)
-  else log("*Not* sending backup start request")
+  else {
+    log("Terminating (eventually killing) the backup process")
+    $.post('/backup/stop', {}, function () {})
+  }
 }
 
 /**
