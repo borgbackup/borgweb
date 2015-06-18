@@ -27,9 +27,10 @@ var noBackupRunning = function (callback) {
 var pollBackupStatus = function (endpoint, ms, callback) {
   noBackupRunning(function (notRunning) {
     if (notRunning) {
-      $('.navbar button[type=submit]').toggleClass('btn-default')
+      $('.navbar button[type=submit]').toggleClass('btn-primary')
       $('.navbar button[type=submit]').toggleClass('btn-warning')
       $('.navbar button[type=submit]').text("▶ Start Backup")
+      $.getJSON('/logs', updateLogFileList)
     } else {
       log("Polling backup status")
       $.getJSON('/backup/status', callback)
@@ -87,6 +88,8 @@ var parseAnchor = function () {
   ~~ UI updaters ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 var updateLogFileList = function (logFiles) {
+  log("Updating log file list")
+  cfg.logFilesListHTML = []
   $.each(logFiles.log_files, function (key, value) {
     cfg.logFilesListHTML += '<li><a href="#log:' + value[0]
       + '" onClick="window.displayThatLog('
