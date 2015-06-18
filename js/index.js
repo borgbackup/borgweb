@@ -97,15 +97,6 @@ var renderLogFile = function (text) {
   log("Rendering: " + text.log_file)
   $('#log-text').html(text.log_content)
 }
-var highlightLogFile = function (logNumber) {
-  if (isInt(cfg.lastSelectedLog))
-    $('#log-files li:nth-child('
-      + (cfg.lastSelectedLog + 1) + ')').toggleClass('active')
-  $(document).ready(function() {
-    $('#log-files li:nth-child('
-      + (logNumber + 1) + ')').toggleClass('active') })
-  cfg.lastSelectedLog = logNumber
-}
 var updateShownLogFile = function (that) {
   log("Updating log file list")
   var logNumber = NaN
@@ -114,7 +105,6 @@ var updateShownLogFile = function (that) {
     logNumber = anchor['log']
   } else logNumber = that
   
-  highlightLogFile(logNumber)
   var url = '/logs/' + logNumber + '/0::'
   log("Fetching " + url)
   $.getJSON(url, renderLogFile)
