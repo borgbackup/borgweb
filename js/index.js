@@ -6,7 +6,42 @@ var dateformat = require('dateformat')
 var cfg = {
   'logFilesList': [],
   'logFilesListHTML': "",
-  'lastSelectedLog': NaN
+  'lastSelectedLog': NaN,
+  'pollFrequency': 100
+}
+
+/**
+  ~~ BorgBackup interaction ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+var noBackupRunning = function (callback) {
+  $.getJSON('/backup/status', function (resp) {
+    if (resp.rc === null) {
+       log('▶ Backup in progress')
+      callback(false)
+    } else {
+      log('✖ No backup in progress')
+      callback(true)
+    }
+  })
+}
+var pollBackupStatus = function (endpoint, ms, callback) {
+  noBackupRunning(function (notRunning) {
+    if (notRunning) return null
+    else {
+      log("Polling backup status")
+      $.getJSON('/backup/status', callback)
+      setTimeout(ms, pollBackupStatus(endpoint, ms, callback))
+    }
+  })
+}
+var startBackup = function (force) {
+  if (force) {
+    log("Sending backup start request")
+    $.post('/backup/start', {}, function () {
+      pollBackupStatus('/backup/status', cfg['pollFrequency'],
+        function (res) { console.log(res) }) })
+  } else if (force === undefined) noBackupRunning(startBackup)
+  else log("*Not* sending backup start request")
 }
 
 /**
@@ -38,10 +73,6 @@ var parseAnchor = function () {
     })
     return partsParsed
   } else return {'log': 0}
-}
-var pollCycle = function (endpoint, ms, callback, state) {
-  updateShownLogFile()
-  setTimeout(ms, pollCycle(endpoint, ms, callback, state))
 }
 
 /**
@@ -82,27 +113,6 @@ var updateShownLogFile = function (that) {
 }
 
 /**
-  ~~ BorgBackup interaction ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-var isBackupRunning = function () {
-  $.getJSON('/backup/status', function (resp) {
-    if (resp.rc === null) log('Backup in progress')
-    else {
-      log('No backup in progress')
-      startBackup(true)
-    }
-  })
-}
-var startBackup = function (force) {
-  if (force) {
-    log("Sending backup start request")
-    $.post('/backup/start', {}, function () {
-    
-    })
-  } else isBackupRunning()
-}
-
-/**
   ~~ UI callables ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 window.displayThatLog = function (that) {
@@ -115,6 +125,7 @@ window.startBackup = startBackup
 */
 $.getJSON('/logs', updateLogFileList)
 updateShownLogFile()
+
 
 
 
