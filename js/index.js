@@ -16,18 +16,21 @@ var cfg = {
 var noBackupRunning = function (callback) {
   $.getJSON('/backup/status', function (resp) {
     if (resp.rc === null) {
-       log('▶ Backup in progress')
+       log("▶ Backup in progress")
       callback(false)
     } else {
-      log('✖ No backup in progress')
+      log("✖ No backup in progress")
       callback(true)
     }
   })
 }
 var pollBackupStatus = function (endpoint, ms, callback) {
   noBackupRunning(function (notRunning) {
-    if (notRunning) return null
-    else {
+    if (notRunning) {
+      $('.navbar button[type=submit]').toggleClass('btn-default')
+      $('.navbar button[type=submit]').toggleClass('btn-warning')
+      $('.navbar button[type=submit]').text("▶ Start Backup")
+    } else {
       log("Polling backup status")
       $.getJSON('/backup/status', callback)
       setTimeout(ms, pollBackupStatus(endpoint, ms, callback))
@@ -38,8 +41,13 @@ var startBackup = function (force) {
   if (force) {
     log("Sending backup start request")
     $.post('/backup/start', {}, function () {
+      $('.navbar button[type=submit]').toggleClass('btn-primary')
+      $('.navbar button[type=submit]').toggleClass('btn-warning')
+      $('.navbar button[type=submit]').text("✖ Stop Backup")
       pollBackupStatus('/backup/status', cfg['pollFrequency'],
-        function (res) { console.log(res) }) })
+        function (res) {
+          log("Received status update")
+        }) })
   } else if (force === undefined) noBackupRunning(startBackup)
   else log("*Not* sending backup start request")
 }
