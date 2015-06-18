@@ -18,7 +18,7 @@ var noBackupRunning = function (callback) {
     var backupRunning = resp.rc === null
     if (backupRunning) log("▶ Backup in progress")
     else log("✖ No backup in progress")
-    callback(backupRunning)
+    callback(!backupRunning)
   })
 }
 var pollBackupStatus = function (endpoint, ms, callback) {
@@ -47,7 +47,10 @@ var startBackup = function (force) {
           log("Received status update")
         }) })
   } else if (force === undefined) noBackupRunning(startBackup)
-  else log("*Not* sending backup start request")
+  else {
+    log("Terminating (eventually killing) the backup process")
+    $.post('/backup/start', {}, function () {})
+  }
 }
 
 /**
