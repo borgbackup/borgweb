@@ -49,7 +49,7 @@ var startBackup = function (force) {
   } else if (force === undefined) noBackupRunning(startBackup)
   else {
     log("Terminating (eventually killing) the backup process")
-    $.post('/backup/start', {}, function () {})
+    $.post('/backup/stop', {}, function () {})
   }
 }
 
