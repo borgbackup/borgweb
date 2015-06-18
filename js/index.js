@@ -99,7 +99,7 @@ var highlightLogFile = function (logNumber) {
   cfg.lastSelectedLog = logNumber
 }
 var updateShownLogFile = function (that) {
-  log("updateShownLogFile")
+  log("Updating log file list")
   var logNumber = NaN
   if (!isInt(that)) {
     var anchor = parseAnchor()
