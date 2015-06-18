@@ -6,7 +6,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" style="color: white;" href="/">BorgWeb</a>
+                    <ul class="nav navbar-nav" style="margin-top: 0; margin-bottom: 0;">
+                        <li>
+                            <a class="navbar-brand" style="color: white;" href="/">BorgWeb</a>
+                        </li>
+                        <li>
+                            <button type="submit" class="btn btn-success" style="margin-top: 8px" onClick="window.startBackup()" title="Start a backup"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start Backup</button>
+                        </li>
+                    </ul>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
@@ -15,10 +22,6 @@
                             <a href="/status/"><i class="fa fa-list fa-fw"></i> Status</a>
                         </li>
                         -->
-                        
-                        <li>
-                            <button type="submit" class="btn btn-success" style="margin-top: 8px" onClick="window.startBackup()" title="Start a backup"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start Backup</button>
-                        </li>
                         <li>
                             <a href="https://borgweb.github.io/"
                                class="navbar-link" title="Open docs in new window" target="_blank"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Documentation</a>
