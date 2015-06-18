@@ -16,7 +16,7 @@ var cfg = {
 var noBackupRunning = function (callback) {
   $.getJSON('/backup/status', function (resp) {
     if (resp.rc === null) {
-       log("▶ Backup in progress")
+      log("▶ Backup in progress")
       callback(false)
     } else {
       log("✖ No backup in progress")
