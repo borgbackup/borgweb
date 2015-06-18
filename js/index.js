@@ -15,13 +15,10 @@ var cfg = {
 */
 var noBackupRunning = function (callback) {
   $.getJSON('/backup/status', function (resp) {
-    if (resp.rc === null) {
-      log("▶ Backup in progress")
-      callback(false)
-    } else {
-      log("✖ No backup in progress")
-      callback(true)
-    }
+    var backupRunning = resp.rc === null
+    if (backupRunning) log("▶ Backup in progress")
+    else log("✖ No backup in progress")
+    callback(backupRunning)
   })
 }
 var pollBackupStatus = function (endpoint, ms, callback) {
