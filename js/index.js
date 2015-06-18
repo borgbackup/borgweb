@@ -24,7 +24,7 @@ var noBackupRunning = function (callback) {
 var pollBackupStatus = function (endpoint, ms, callback) {
   noBackupRunning(function (notRunning) {
     if (notRunning) {
-      $('.navbar button[type=submit]').toggleClass('btn-primary')
+      $('.navbar button[type=submit]').toggleClass('btn-success')
       $('.navbar button[type=submit]').toggleClass('btn-warning')
       $('.navbar button[type=submit]').text("▶ Start Backup")
       $.getJSON('/logs', updateLogFileList)
@@ -39,7 +39,7 @@ var startBackup = function (force) {
   if (force) {
     log("Sending backup start request")
     $.post('/backup/start', {}, function () {
-      $('.navbar button[type=submit]').toggleClass('btn-primary')
+      $('.navbar button[type=submit]').toggleClass('btn-success')
       $('.navbar button[type=submit]').toggleClass('btn-warning')
       $('.navbar button[type=submit]').text("✖ Stop Backup")
       pollBackupStatus('/backup/status', cfg['pollFrequency'],

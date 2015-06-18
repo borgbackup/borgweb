@@ -8,3 +8,6 @@ body {
 #log-text {
     white-space: pre-wrap;
 }
+#log-files li a {
+  color: #3c8b3c;
+}
