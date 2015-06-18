@@ -18,7 +18,7 @@ var noBackupRunning = function (callback) {
     var backupRunning = resp.rc === null
     if (backupRunning) log("▶ Backup in progress")
     else log("✖ No backup in progress")
-    callback(backupRunning)
+    callback(!backupRunning)
   })
 }
 var pollBackupStatus = function (endpoint, ms, callback) {
