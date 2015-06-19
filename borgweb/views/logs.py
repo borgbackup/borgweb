@@ -8,15 +8,32 @@ from flask import current_app, render_template, jsonify
 
 from . import blueprint
 
+SUCCESS, INFO, WARNING, DANGER = 'success', 'info', 'warning', 'danger'
+
+
+def overall_classifier(f):
+    # TODO: we need sane logging with log levels, sane return codes, logging
+    #       of return codes in Borg before this can be really useful.
+    # we expect the most interesting stuff at the end of the log file:
+    end = f.seek(0, os.SEEK_END)
+    f.seek(max(0, end - 1024), os.SEEK_SET)
+    lines = [line.rstrip('\n') for line in f.readlines()]
+    f.seek(0, os.SEEK_SET)
+    classifications = set([line_classifier(line) for line in lines[1:]])
+    for cls in DANGER, WARNING, SUCCESS:
+        if cls in classifications:
+            return cls
+    return DANGER  # something strange happened (empty log?)
+
+
 def line_classifier(line):
     # TODO: we need sane logging with log levels, sane return codes, logging
     #       of return codes in Borg before this can be really useful.
-    SUCCESS, INFO, WARNING, DANGER = 'success', 'info', 'warning', 'danger'
     if line.startswith('borg: Exiting with failure status due to previous errors'):
         return DANGER
     if line.startswith('borg: '):
         return WARNING
-    return INFO
+    return SUCCESS
 
 
 def _get_logs():
@@ -79,7 +96,9 @@ def get_log(index):
         log_file = ''
     else:
         log_file = os.path.join(log_dir, log_file)
-    return jsonify(dict(log_file=log_file))
+    with open(log_file, 'r') as f:
+        status = overall_classifier(f)
+    return jsonify(dict(log_file=log_file, status=status))
 
 
 @blueprint.route('/logs')
