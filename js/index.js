@@ -100,6 +100,7 @@ var updateLogFileList = function (logFiles) {
 }
 var appendLog = function (data) {
   log("Rendering: " + data.fname)
+  $('#log-path').text(data.fname)
   var logText = $('#log-text')
   data.lines.forEach(function (val, index) { logText.append(val + '\n') })
   $('#loadMore').remove()
@@ -109,9 +110,8 @@ var appendLog = function (data) {
     + cfg['shownLog']['lines'] + ')">load more</button>' )
 }
 var showLog = function (id, offset, lines) {
-  if (arguments.length === 1) {
-    $('#log-text').html('')
-    cfg['shownLog']['offset'] = 0 }
+  if (arguments.length === 1 || id !== cfg['shownLog']['id']) {
+    $('#log-text').html(''); cfg['shownLog']['offset'] = 0 }
   cfg['shownLog']['id'] = id || cfg['shownLog']['id']
   cfg['shownLog']['offset'] = offset || cfg['shownLog']['offset']
   cfg['shownLog']['lines'] = lines || cfg['shownLog']['lines']
