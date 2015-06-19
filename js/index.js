@@ -7,7 +7,9 @@ var cfg = {
   'logFilesList': [],
   'logFilesListHTML': "",
   'lastSelectedLog': NaN,
-  'pollFrequency': 100
+  'pollFrequency': 100,
+  'shownLog': {
+    'id': 0, 'offset': 0, 'lines': 10 }
 }
 
 /**
@@ -96,36 +98,43 @@ var updateLogFileList = function (logFiles) {
       + value[0] + ')">' + value[1] + '</a></li>'})
   $('#log-files').html(cfg.logFilesListHTML)
 }
-var renderLogFile = function (text) {
-  log("Rendering: " + text.log_file)
-  $('#log-text').html(text.log_content)
+var appendLog = function (data) {
+  log("Rendering: " + data.fname)
+  var logText = $('#log-text')
+  data.lines.forEach(function (val, index) { logText.append(val + '\n') })
+  $('#loadMore').remove()
+  cfg['shownLog']['offset'] = data.offset
+  logText.after('<button id="loadMore" onClick="window.showLog('
+    + cfg['shownLog']['id'] + ', ' + cfg['shownLog']['offset'] + ', '
+    + cfg['shownLog']['lines'] + ')">load more</button>' )
 }
-var updateShownLogFile = function (that) {
-  log("Updating log file list")
-  var logNumber = NaN
-  if (!isInt(that)) {
-    var anchor = parseAnchor()
-    logNumber = anchor['log']
-  } else logNumber = that
-  
-  var url = '/logs/' + logNumber + '/0::'
-  log("Fetching " + url)
-  $.getJSON(url, renderLogFile)
+var showLog = function (id, offset, lines) {
+  if (arguments.length === 1) {
+    $('#log-text').html('')
+    cfg['shownLog']['offset'] = 0 }
+  cfg['shownLog']['id'] = id || cfg['shownLog']['id']
+  cfg['shownLog']['offset'] = offset || cfg['shownLog']['offset']
+  cfg['shownLog']['lines'] = lines || cfg['shownLog']['lines']
+  var url = '/logs/' + cfg['shownLog']['id'] + '/' + cfg['shownLog']['offset']
+    + ':' + cfg['shownLog']['lines']
+  log("Fetching log (" + cfg['shownLog']['id'] + ', '
+    + cfg['shownLog']['offset'] + ', ' + cfg['shownLog']['lines'] + ')')
+  $.getJSON(url, appendLog)
 }
 
 /**
   ~~ UI callables ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 window.displayThatLog = function (that) {
-  updateShownLogFile(that)
+  showLog(that)
 }
 window.startBackup = startBackup
-
+window.showLog = showLog
 /**
   ~~ Site init ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 $.getJSON('/logs', updateLogFileList)
-updateShownLogFile()
+showLog()
 
 
 
