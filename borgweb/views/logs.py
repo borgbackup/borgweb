@@ -8,6 +8,16 @@ from flask import current_app, render_template, jsonify
 
 from . import blueprint
 
+def line_classifier(line):
+    # TODO: we need sane logging with log levels, sane return codes, logging
+    #       of return codes in Borg before this can be really useful.
+    SUCCESS, INFO, WARNING, DANGER = 'success', 'info', 'warning', 'danger'
+    if line.startswith('borg: Exiting with failure status due to previous errors'):
+        return DANGER
+    if line.startswith('borg: '):
+        return WARNING
+    return INFO
+
 
 def _get_logs():
     log_dir = current_app.config['LOG_DIR']
@@ -56,6 +66,7 @@ def get_log_fragment(index, offset, linecount):
         log_file, offset, log_lines = _get_log_lines(log_dir, log_file, offset, linecount)
     else:
         log_lines = []
+    log_lines = [(line_classifier(line), line) for line in log_lines]
     return jsonify(dict(fname=log_file, lines=log_lines, offset=offset))
 
 
