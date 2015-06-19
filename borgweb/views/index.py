@@ -89,9 +89,12 @@ def _get_log_lines(log_dir, log_file, offset, linecount=None):
         if linecount is None:
             log_lines = f.readlines()
         else:
-            # if more lines are wanted than present in logfile,
-            # this will "fill up" to the wanted count with empty lines.
-            log_lines = [f.readline() for i in range(linecount)]
+            log_lines = []
+            for i in range(linecount):
+                line = f.readline()
+                if not line:
+                    break
+                log_lines.append(line)
         log_lines = [line.rstrip('\n') for line in log_lines]
         offset = f.tell()
     return log_file, offset, log_lines
