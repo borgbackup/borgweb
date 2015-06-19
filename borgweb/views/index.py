@@ -2,7 +2,6 @@
 main view
 """
 
-from functools import lru_cache
 import os
 import subprocess
 import time
@@ -83,37 +82,41 @@ def _get_logs():
     return log_dir, sorted(log_files, reverse=True)
 
 
-@lru_cache(maxsize=4)
-def _get_all_log_lines(log_dir, log_file):
+def _get_log_lines(log_dir, log_file, offset, linecount=None):
     log_file = os.path.join(log_dir, log_file)
     with open(log_file, 'r') as f:
-        log_lines = list(f)
-    return log_file, log_lines
+        f.seek(offset)
+        if linecount is None:
+            log_lines = f.readlines()
+        else:
+            # if more lines are wanted than present in logfile,
+            # this will "fill up" to the wanted count with empty lines.
+            log_lines = [f.readline() for i in range(linecount)]
+        log_lines = [line.rstrip('\n') for line in log_lines]
+        offset = f.tell()
+    return log_file, offset, log_lines
 
 
-@blueprint.route('/logs/<int:index>/<start>:<end>')
-def get_log_fragment(index, start, end):
+@blueprint.route('/logs/<int:index>/<offset>:<linecount>')
+def get_log_fragment(index, offset, linecount):
     try:
-        start = int(start)
+        offset = int(offset)
     except ValueError:
-        start = None
+        offset = 0
     try:
-        end = int(end)
+        linecount = int(linecount)
     except ValueError:
-        end = None
+        linecount = None
     log_dir, log_files = _get_logs()
     try:
         log_file = log_files[index]
     except IndexError:
         log_file = ''
     if log_file:
-        log_file, log_lines = _get_all_log_lines(log_dir, log_file)
-        log_lines = log_lines[start:end]
+        log_file, offset, log_lines = _get_log_lines(log_dir, log_file, offset, linecount)
     else:
         log_lines = []
-    log_content = ''.join(log_lines)
-    return jsonify(dict(log_file=log_file,
-                        log_content=log_content))
+    return jsonify(dict(fname=log_file, lines=log_lines, offset=offset))
 
 
 @blueprint.route('/logs/<int:index>')
@@ -123,14 +126,9 @@ def get_log(index):
         log_file = log_files[index]
     except IndexError:
         log_file = ''
-    if log_file:
-        log_file = os.path.join(log_dir, log_file)
-        log_file, log_lines = _get_all_log_lines(log_dir, log_file)
-        log_length = len(log_lines)
     else:
-        log_length = 0
-    return jsonify(dict(log_file=log_file,
-                        log_length=log_length))
+        log_file = os.path.join(log_dir, log_file)
+    return jsonify(dict(log_file=log_file))
 
 
 @blueprint.route('/logs')
