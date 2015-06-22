@@ -16,10 +16,9 @@ process = None
 def backup_start():
     env = dict(current_app.config)
     now = time.time()
-    utc = time.gmtime(now)
-    localtime = time.localtime(now)
-    env['LOCALTIME'] = time.strftime('%Y-%m-%d-%H:%M:%S', localtime)
-    env['UTC'] = time.strftime('%Y-%m-%d-%H:%M:%S', utc)
+    fmt = '%Y-%m-%d-%H:%M:%S'
+    env['LOCALTIME'] = time.strftime(fmt, time.localtime(now))
+    env['UTC'] = time.strftime(fmt, time.gmtime(now))
     cmd = env['BACKUP_CMD'].format(**env)
     global process
     if process is None or process.returncode is not None:
