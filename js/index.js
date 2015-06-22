@@ -101,10 +101,23 @@ var updateLogFileList = function (logFiles) {
 }
 var appendLog = function (data) {
   log("Rendering: " + data.fname)
-  $('#log-path').text(data.fname)
+  
+  // set status icon:
+  $.getJSON('logs/' + cfg['shownLog']['id'], function (ret) {
+    var icon = {
+      'success': ['ok-circle', '#5cb85c'],
+      'warning': ['ban-circle', '#f0ad4e'],
+      'error': ['remove-circle', '#c9302c']
+    }
+    $('#log-path').html('<span class="glyphicon glyphicon-' + icon[ret.status][0]
+      + '" aria-hidden="true" style="color: ' + icon[ret.status][1]
+      + '; width: 20px; height: 24px; vertical-align: top;"></span> ' + data.fname )
+  })
+  
+  // append log text:
   var logText = $('#log-text')
   if (cfg['shownLog']['offset'] === 0) $('#log-text').html('')
-  data.lines.forEach(function (val, index) { logText.append(val + '\n') })
+  data.lines.forEach(function (val, index) { logText.append(val[1] + '\n') })
   $('#loadMore').remove()
   cfg['shownLog']['offset'] = data.offset
   logText.after('<button id="loadMore" onClick="window.showLog('
