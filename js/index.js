@@ -9,7 +9,8 @@ var cfg = {
   'lastSelectedLog': NaN,
   'pollFrequency': 100,
   'shownLog': {
-    'id': 0, 'offset': 0, 'lines': 10 }
+    'id': 0, 'offset': 0, 'lines': 10 },
+  'transitionTime': 170
 }
 
 /**
@@ -102,6 +103,7 @@ var appendLog = function (data) {
   log("Rendering: " + data.fname)
   $('#log-path').text(data.fname)
   var logText = $('#log-text')
+  if (cfg['shownLog']['offset'] === 0) $('#log-text').html('')
   data.lines.forEach(function (val, index) { logText.append(val + '\n') })
   $('#loadMore').remove()
   cfg['shownLog']['offset'] = data.offset
@@ -111,7 +113,9 @@ var appendLog = function (data) {
 }
 var showLog = function (id, offset, lines) {
   if (arguments.length === 1 || id !== cfg['shownLog']['id']) {
-    $('#log-text').html(''); cfg['shownLog']['offset'] = 0 }
+    log("Displaying different log than before")
+    $('#log-text').fadeOut(cfg['transitionTime'] * 0.5)
+    cfg['shownLog']['offset'] = 0 }
   cfg['shownLog']['id'] = id || cfg['shownLog']['id']
   cfg['shownLog']['offset'] = offset || cfg['shownLog']['offset']
   cfg['shownLog']['lines'] = lines || cfg['shownLog']['lines']
@@ -120,6 +124,7 @@ var showLog = function (id, offset, lines) {
   log("Fetching log (" + cfg['shownLog']['id'] + ', '
     + cfg['shownLog']['offset'] + ', ' + cfg['shownLog']['lines'] + ')')
   $.getJSON(url, appendLog)
+  $('#log-text').fadeIn(cfg['transitionTime'] * 0.5)
 }
 
 /**
