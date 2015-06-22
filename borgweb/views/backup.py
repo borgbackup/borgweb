@@ -26,7 +26,7 @@ def backup_start():
         process = subprocess.Popen(cmd, shell=True, stdin=None, stdout=None, stderr=None)
         msg = "started, pid=%d" % process.pid
     else:
-        msg = "already running"
+        msg = "already running, pid %d" % process.pid
     return jsonify(dict(msg=msg, pid=process.pid))
 
 
@@ -37,17 +37,18 @@ def backup_stop():
         rc = -1
         msg = 'not running'
     else:
+        pid = process.pid
         try:
             process.terminate()
             for t in range(10):
                 rc = process.poll()
                 if rc is not None:
-                    msg = 'terminated'
-                    break  # process has terminated
+                    msg = 'terminated pid %d' % pid
+                    break
                 time.sleep(1)
             else:
                 process.kill()
-                msg = 'killed'
+                msg = 'killed pid %d' % pid
                 rc = -1
         except ProcessLookupError:
             rc = -1
@@ -61,7 +62,7 @@ def backup_rc():
     if process is not None:
         rc = process.poll()
         if rc is None:
-            msg = 'running'
+            msg = 'running, pid %d' % process.pid
         else:
             msg = 'not running, last rc=%d' % rc
     else:
