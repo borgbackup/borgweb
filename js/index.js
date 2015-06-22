@@ -16,7 +16,7 @@ var cfg = {
   ~~ BorgBackup interaction ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 var noBackupRunning = function (callback) {
-  $.getJSON('/backup/status', function (resp) {
+  $.getJSON('backup/status', function (resp) {
     var backupRunning = resp.rc === null
     if (backupRunning) log("▶ Backup in progress")
     else log("✖ No backup in progress")
@@ -29,10 +29,10 @@ var pollBackupStatus = function (endpoint, ms, callback) {
       $('.navbar button[type=submit]').toggleClass('btn-success')
       $('.navbar button[type=submit]').toggleClass('btn-warning')
       $('.navbar button[type=submit]').text("▶ Start Backup")
-      $.getJSON('/logs', updateLogFileList)
+      $.getJSON('logs', updateLogFileList)
     } else {
       log("Polling backup status")
-      $.getJSON('/backup/status', callback)
+      $.getJSON('backup/status', callback)
       setTimeout(ms, pollBackupStatus(endpoint, ms, callback))
     }
   })
@@ -40,18 +40,18 @@ var pollBackupStatus = function (endpoint, ms, callback) {
 var startBackup = function (force) {
   if (force) {
     log("Sending backup start request")
-    $.post('/backup/start', {}, function () {
+    $.post('backup/start', {}, function () {
       $('.navbar button[type=submit]').toggleClass('btn-success')
       $('.navbar button[type=submit]').toggleClass('btn-warning')
       $('.navbar button[type=submit]').text("✖ Stop Backup")
-      pollBackupStatus('/backup/status', cfg['pollFrequency'],
+      pollBackupStatus('backup/status', cfg['pollFrequency'],
         function (res) {
           log("Received status update")
         }) })
   } else if (force === undefined) noBackupRunning(startBackup)
   else {
     log("Terminating (eventually killing) the backup process")
-    $.post('/backup/stop', {}, function () {})
+    $.post('backup/stop', {}, function () {})
   }
 }
 
@@ -115,7 +115,7 @@ var showLog = function (id, offset, lines) {
   cfg['shownLog']['id'] = id || cfg['shownLog']['id']
   cfg['shownLog']['offset'] = offset || cfg['shownLog']['offset']
   cfg['shownLog']['lines'] = lines || cfg['shownLog']['lines']
-  var url = '/logs/' + cfg['shownLog']['id'] + '/' + cfg['shownLog']['offset']
+  var url = 'logs/' + cfg['shownLog']['id'] + '/' + cfg['shownLog']['offset']
     + ':' + cfg['shownLog']['lines']
   log("Fetching log (" + cfg['shownLog']['id'] + ', '
     + cfg['shownLog']['offset'] + ', ' + cfg['shownLog']['lines'] + ')')
@@ -133,7 +133,7 @@ window.showLog = showLog
 /**
   ~~ Site init ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-$.getJSON('/logs', updateLogFileList)
+$.getJSON('logs', updateLogFileList)
 showLog()
 
 
