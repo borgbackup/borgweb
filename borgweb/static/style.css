@@ -11,3 +11,10 @@ body {
 #log-files li a {
   color: #3c8b3c;
 }
+.navbar-brand:hover {
+  text-decoration: none;
+  background-position: 0 2px;
+  background-image: -webkit-gradient(linear,left top,left bottom,from(#419641),to(#5cb85c));
+  background-repeat: repeat;
+  background-color: #419641;
+}
