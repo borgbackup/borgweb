@@ -93,7 +93,7 @@ var parseAnchor = function () {
 var updateLogFileList = function (logFiles) {
   log("Updating log file list")
   cfg.logFilesListHTML = []
-  $.each(logFiles.log_files, function (key, value) {
+  $.each(logFiles.files, function (key, value) {
     cfg.logFilesListHTML += '<li><a href="#log:' + value[0]
       + '" onClick="window.displayThatLog('
       + value[0] + ')">' + value[1] + '</a></li>'})
@@ -111,7 +111,7 @@ var appendLog = function (data) {
     }
     $('#log-path').html('<span class="glyphicon glyphicon-' + icon[ret.status][0]
       + '" aria-hidden="true" style="color: ' + icon[ret.status][1]
-      + '; width: 20px; height: 24px; vertical-align: top;"></span> ' + data.fname )
+      + '; width: 20px; height: 24px; vertical-align: top;"></span> ' + ret.filename )
   })
   
   // append log text:

@@ -5,5 +5,5 @@ class Config(object):
     LOG_DIR = 'logs'
     REPOSITORY = 'repo'
     NAME = 'localhost'
-    BACKUP_CMD = "borg create -v {REPOSITORY}::{NAME}-{UTC} . >{LOG_DIR}/{NAME}-{UTC} 2>&1"
+    BACKUP_CMD = "borg create -v {REPOSITORY}::{NAME}-{LOCALTIME} . >{LOG_DIR}/{NAME}-{LOCALTIME} 2>&1"
 
