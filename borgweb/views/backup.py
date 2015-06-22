@@ -31,21 +31,6 @@ def backup_start():
     return jsonify(dict(msg=msg, pid=process.pid))
 
 
-@blueprint.route('/backup/status')
-def backup_rc():
-    global process
-    if process is not None:
-        rc = process.poll()
-        if rc is None:
-            msg = 'running'
-        else:
-            msg = 'not running, last rc=%d' % rc
-    else:
-        msg = 'not running'
-        rc = -1
-    return jsonify(dict(msg=msg, rc=rc))
-
-
 @blueprint.route('/backup/stop', methods=['POST'])
 def backup_stop():
     global process
@@ -69,3 +54,19 @@ def backup_stop():
             rc = -1
             msg = 'not running'
     return jsonify(dict(msg=msg, rc=rc))
+
+
+@blueprint.route('/backup/status')
+def backup_rc():
+    global process
+    if process is not None:
+        rc = process.poll()
+        if rc is None:
+            msg = 'running'
+        else:
+            msg = 'not running, last rc=%d' % rc
+    else:
+        msg = 'not running'
+        rc = -1
+    return jsonify(dict(msg=msg, rc=rc))
+
