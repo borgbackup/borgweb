@@ -84,7 +84,7 @@ def get_log_fragment(index, offset, linecount):
     else:
         log_lines = []
     log_lines = [(line_classifier(line), line) for line in log_lines]
-    return jsonify(dict(fname=log_file, lines=log_lines, offset=offset))
+    return jsonify(dict(lines=log_lines, offset=offset))
 
 
 @blueprint.route('/logs/<int:index>')
@@ -98,12 +98,12 @@ def get_log(index):
         log_file = os.path.join(log_dir, log_file)
     with open(log_file, 'r') as f:
         status = overall_classifier(f)
-    return jsonify(dict(log_file=log_file, status=status))
+    return jsonify(dict(filename=log_file, status=status))
 
 
 @blueprint.route('/logs')
 def get_logs():
     log_dir, log_files = _get_logs()
-    return jsonify(dict(log_dir=log_dir,
-                        log_files=list(enumerate(log_files))))
+    return jsonify(dict(dir=log_dir,
+                        files=list(enumerate(log_files))))
 
