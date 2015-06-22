@@ -38,6 +38,11 @@ var pollBackupStatus = function (endpoint, ms, callback) {
     }
   })
 }
+var stopBackup = function () {
+  log("Terminating (eventually killing) the backup process")
+  $.post('backup/stop', {}, function (res) {
+    log("Message: '" + res.msg + "', RC: '" + res.rc + "'") })
+}
 var startBackup = function (force) {
   if (force) {
     log("Sending backup start request")
@@ -50,9 +55,8 @@ var startBackup = function (force) {
           log("Received status update")
         }) })
   } else if (force === undefined) noBackupRunning(startBackup)
-  else {
-    log("Terminating (eventually killing) the backup process")
-    $.post('backup/stop', {}, function () {})
+    else {
+    stopBackup()
   }
 }
 
@@ -103,15 +107,15 @@ var appendLog = function (data) {
   log("Rendering: " + data.fname)
   
   // set status icon:
-  $.getJSON('logs/' + cfg['shownLog']['id'], function (ret) {
+  $.getJSON('logs/' + cfg['shownLog']['id'], function (res) {
     var icon = {
       'success': ['ok-circle', '#5cb85c'],
       'warning': ['ban-circle', '#f0ad4e'],
       'error': ['remove-circle', '#c9302c']
     }
-    $('#log-path').html('<span class="glyphicon glyphicon-' + icon[ret.status][0]
-      + '" aria-hidden="true" style="color: ' + icon[ret.status][1]
-      + '; width: 20px; height: 24px; vertical-align: top;"></span> ' + ret.filename )
+    $('#log-path').html('<span class="glyphicon glyphicon-' + icon[res.status][0]
+      + '" aria-hidden="true" style="color: ' + icon[res.status][1]
+      + '; width: 20px; height: 24px; vertical-align: top;"></span> ' + res.filename )
   })
   
   // append log text:
