@@ -4,17 +4,21 @@ var dateformat = require('dateformat')
   ~~ Config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 var cfg = {
-  'lastSelectedLog': NaN,
-  'pollFrequency': 300,
-  'transitionTime': 170,
-  'lastRun': 0,
-  'coolDownTime': 1000,
+  lastSelectedLog: NaN,
+  pollFrequency: 300,
+  transitionTime: 170,
+  lastRun: 0,
+  coolDownTime: 1000,
+  icon: {
+    success: ['ok-circle', '#5cb85c'],
+    warning: ['ban-circle', '#f0ad4e'],
+    danger: ['remove-circle', '#c9302c']
+  },
   
-  // not so much `cfg` actually:
-  'logFilesList': [],
-  'logFilesListHTML': "",
-  'shownLog': {
-    'id': 0, 'offset': 0, 'lines': 10 }
+  logFilesList: [],
+  logFilesListHTML: "",
+  shownLog: {
+    id: 0, offset: 0, lines: 75, data: [] }
 }
 
 /**
@@ -106,7 +110,7 @@ var updateLogFileList = function (logFiles) {
   cfg.logFilesListHTML = []
   $.each(logFiles.files, function (key, value) {
     cfg.logFilesListHTML += '<li><a href="#log:' + value[0] + '" id="log-' + value[0]
-      + '" onClick="window.displayThatLog('
+      + '" onClick="window.showLog('
       + value[0] + ')">' + value[1] + '</a></li>' })
   $('#log-files').html(cfg.logFilesListHTML)
   log("Highlighting log # " + parseInt(cfg['shownLog']['id']))
@@ -116,13 +120,8 @@ var appendLog = function (data, overwrite) {
   // set status icon:
   $.getJSON('logs/' + cfg['shownLog']['id'], function (res) {
     log("Requesting backup status")
-    var icon = {
-      'success': ['ok-circle', '#5cb85c'],
-      'warning': ['ban-circle', '#f0ad4e'],
-      'danger': ['remove-circle', '#c9302c']
-    }
-    $('#log-path').html('<span class="glyphicon glyphicon-' + icon[res.status][0]
-      + '" aria-hidden="true" style="color: ' + icon[res.status][1]
+    $('#log-path').html('<span class="glyphicon glyphicon-' + cfg['icon'][res.status][0]
+      + '" aria-hidden="true" style="color: ' + cfg['icon'][res.status][1]
       + '; width: 20px; height: 24px; vertical-align: top;"></span> ' + res.filename )
   })
   
@@ -139,7 +138,7 @@ var appendLog = function (data, overwrite) {
 var overwriteLog = function (data) { appendLog(data, true) }
 var showLog = function (id, offset, lines) {
   var newLog = false
-  if (id !== cfg['shownLog']['id']) {
+  if (id !== cfg['shownLog']['id'] || ! isInt(offset)) {
     log("Displaying different log than before")
     $('#log-text').fadeOut(cfg['transitionTime'] * 0.5)
     var args = parseAnchor()
@@ -164,18 +163,14 @@ var showLog = function (id, offset, lines) {
 /**
   ~~ UI callables ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-window.displayThatLog = function (that) {
-  showLog(that)
-}
+window.showLog = function (id, offset, lines) { showLog(id, offset, lines) }
 window.startBackup = startBackup
-window.showLog = showLog
 /**
   ~~ Site init ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
 $.getJSON('logs', updateLogFileList)
 showLog()
-
 
 
 
