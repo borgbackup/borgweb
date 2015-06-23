@@ -108,10 +108,11 @@ var updateLogFileList = function (logFiles) {
 var appendLog = function (data, overwrite) {
   // set status icon:
   $.getJSON('logs/' + cfg['shownLog']['id'], function (res) {
+    log("Requesting backup status")
     var icon = {
       'success': ['ok-circle', '#5cb85c'],
       'warning': ['ban-circle', '#f0ad4e'],
-      'error': ['remove-circle', '#c9302c']
+      'danger': ['remove-circle', '#c9302c']
     }
     $('#log-path').html('<span class="glyphicon glyphicon-' + icon[res.status][0]
       + '" aria-hidden="true" style="color: ' + icon[res.status][1]
@@ -120,7 +121,7 @@ var appendLog = function (data, overwrite) {
   
   // append log text:
   var logText = $('#log-text')
-  if (cfg['shownLog']['offset'] === 0 || overwrite) $('#log-text').html('')
+  if (cfg['shownLog']['offset'] === 0 || overwrite) logText.html('')
   data.lines.forEach(function (val, index) { logText.append(val[1] + '\n') })
   $('#loadMore').remove()
   cfg['shownLog']['offset'] = data.offset
