@@ -4,13 +4,17 @@ var dateformat = require('dateformat')
   ~~ Config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 var cfg = {
-  'logFilesList': [],
-  'logFilesListHTML': "",
   'lastSelectedLog': NaN,
   'pollFrequency': 300,
+  'transitionTime': 170,
+  'lastRun': 0,
+  'coolDownTime': 1000,
+  
+  // not so much `cfg` actually:
+  'logFilesList': [],
+  'logFilesListHTML': "",
   'shownLog': {
-    'id': 0, 'offset': 0, 'lines': 10 },
-  'transitionTime': 170
+    'id': 0, 'offset': 0, 'lines': 10 }
 }
 
 /**
@@ -46,14 +50,17 @@ var stopBackup = function () {
 var startBackup = function (force) {
   if (force) {
     log("Sending backup start request")
-    $.post('backup/start', {}, function () {
-      $('.navbar button[type=submit]').toggleClass('btn-success')
-      $('.navbar button[type=submit]').toggleClass('btn-warning')
-      $('.navbar button[type=submit]').text("✖ Stop Backup")
-      pollBackupStatus('backup/status', cfg['pollFrequency'],
-        function (res) {
-          log("Received status update")
-        }) })
+    if (Date.now() - cfg['lastRun'] >= cfg['coolDownTime']) {
+      cfg['lastRun'] = Date.now()
+      $.post('backup/start', {}, function () {
+        $('.navbar button[type=submit]').toggleClass('btn-success')
+        $('.navbar button[type=submit]').toggleClass('btn-warning')
+        $('.navbar button[type=submit]').text("✖ Stop Backup")
+        pollBackupStatus('backup/status', cfg['pollFrequency'],
+          function (res) {
+            log("Received status update")
+          }) })
+    } else log('Restarting backup too fast, ignoring')
   } else if (force === undefined) noBackupRunning(startBackup)
     else {
     stopBackup()
@@ -108,10 +115,11 @@ var updateLogFileList = function (logFiles) {
 var appendLog = function (data, overwrite) {
   // set status icon:
   $.getJSON('logs/' + cfg['shownLog']['id'], function (res) {
+    log("Requesting backup status")
     var icon = {
       'success': ['ok-circle', '#5cb85c'],
       'warning': ['ban-circle', '#f0ad4e'],
-      'error': ['remove-circle', '#c9302c']
+      'danger': ['remove-circle', '#c9302c']
     }
     $('#log-path').html('<span class="glyphicon glyphicon-' + icon[res.status][0]
       + '" aria-hidden="true" style="color: ' + icon[res.status][1]
@@ -120,7 +128,7 @@ var appendLog = function (data, overwrite) {
   
   // append log text:
   var logText = $('#log-text')
-  if (cfg['shownLog']['offset'] === 0 || overwrite) $('#log-text').html('')
+  if (cfg['shownLog']['offset'] === 0 || overwrite) logText.html('')
   data.lines.forEach(function (val, index) { logText.append(val[1] + '\n') })
   $('#loadMore').remove()
   cfg['shownLog']['offset'] = data.offset
