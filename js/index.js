@@ -7,7 +7,7 @@ var cfg = {
   'logFilesList': [],
   'logFilesListHTML': "",
   'lastSelectedLog': NaN,
-  'pollFrequency': 100,
+  'pollFrequency': 300,
   'shownLog': {
     'id': 0, 'offset': 0, 'lines': 10 },
   'transitionTime': 170
@@ -34,7 +34,7 @@ var pollBackupStatus = function (endpoint, ms, callback) {
     } else {
       log("Polling backup status")
       $.getJSON('backup/status', callback)
-      setTimeout(ms, pollBackupStatus(endpoint, ms, callback))
+      setTimeout(function () { pollBackupStatus(endpoint, ms, callback) }, ms)
     }
   })
 }
