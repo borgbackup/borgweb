@@ -98,14 +98,14 @@ var updateLogFileList = function (logFiles) {
   log("Updating log file list")
   cfg.logFilesListHTML = []
   $.each(logFiles.files, function (key, value) {
-    cfg.logFilesListHTML += '<li><a href="#log:' + value[0]
+    cfg.logFilesListHTML += '<li><a href="#log:' + value[0] + '" id="log-' + value[0]
       + '" onClick="window.displayThatLog('
-      + value[0] + ')">' + value[1] + '</a></li>'})
+      + value[0] + ')">' + value[1] + '</a></li>' })
   $('#log-files').html(cfg.logFilesListHTML)
+  log("Highlighting log # " + parseInt(cfg['shownLog']['id']))
+  $('#log-' + parseInt(cfg['shownLog']['id'])).focus()
 }
-var appendLog = function (data) {
-  log("Rendering: " + data.fname)
-  
+var appendLog = function (data, overwrite) {
   // set status icon:
   $.getJSON('logs/' + cfg['shownLog']['id'], function (res) {
     var icon = {
@@ -120,7 +120,7 @@ var appendLog = function (data) {
   
   // append log text:
   var logText = $('#log-text')
-  if (cfg['shownLog']['offset'] === 0) $('#log-text').html('')
+  if (cfg['shownLog']['offset'] === 0 || overwrite) $('#log-text').html('')
   data.lines.forEach(function (val, index) { logText.append(val[1] + '\n') })
   $('#loadMore').remove()
   cfg['shownLog']['offset'] = data.offset
@@ -128,11 +128,17 @@ var appendLog = function (data) {
     + cfg['shownLog']['id'] + ', ' + cfg['shownLog']['offset'] + ', '
     + cfg['shownLog']['lines'] + ')">load more</button>' )
 }
+var overwriteLog = function (data) { appendLog(data, true) }
 var showLog = function (id, offset, lines) {
-  if (arguments.length === 1 || id !== cfg['shownLog']['id']) {
+  var newLog = false
+  if (id !== cfg['shownLog']['id']) {
     log("Displaying different log than before")
     $('#log-text').fadeOut(cfg['transitionTime'] * 0.5)
-    cfg['shownLog']['offset'] = 0 }
+    var args = parseAnchor()
+    cfg['shownLog']['id'] = args['log'] || 0
+    cfg['shownLog']['offset'] = 0
+    newLog = true
+  }
   cfg['shownLog']['id'] = id || cfg['shownLog']['id']
   cfg['shownLog']['offset'] = offset || cfg['shownLog']['offset']
   cfg['shownLog']['lines'] = lines || cfg['shownLog']['lines']
@@ -140,8 +146,11 @@ var showLog = function (id, offset, lines) {
     + ':' + cfg['shownLog']['lines']
   log("Fetching log (" + cfg['shownLog']['id'] + ', '
     + cfg['shownLog']['offset'] + ', ' + cfg['shownLog']['lines'] + ')')
-  $.getJSON(url, appendLog)
-  $('#log-text').fadeIn(cfg['transitionTime'] * 0.5)
+  setTimeout(function () { 
+    if (newLog) $.getJSON(url, overwriteLog)
+    else $.getJSON(url, appendLog)
+    $('#log-text').fadeIn(cfg['transitionTime'] * 0.5)
+  }, cfg['transitionTime'] * 0.5)
 }
 
 /**
@@ -155,6 +164,7 @@ window.showLog = showLog
 /**
   ~~ Site init ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+
 $.getJSON('logs', updateLogFileList)
 showLog()
 
