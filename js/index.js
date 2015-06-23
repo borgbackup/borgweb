@@ -4,13 +4,17 @@ var dateformat = require('dateformat')
   ~~ Config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 var cfg = {
-  'logFilesList': [],
-  'logFilesListHTML': "",
   'lastSelectedLog': NaN,
   'pollFrequency': 300,
+  'transitionTime': 170,
+  'lastRun': 0,
+  'coolDownTime': 1000,
+  
+  // not so much `cfg` actually:
+  'logFilesList': [],
+  'logFilesListHTML': "",
   'shownLog': {
-    'id': 0, 'offset': 0, 'lines': 10 },
-  'transitionTime': 170
+    'id': 0, 'offset': 0, 'lines': 10 }
 }
 
 /**
@@ -46,14 +50,17 @@ var stopBackup = function () {
 var startBackup = function (force) {
   if (force) {
     log("Sending backup start request")
-    $.post('backup/start', {}, function () {
-      $('.navbar button[type=submit]').toggleClass('btn-success')
-      $('.navbar button[type=submit]').toggleClass('btn-warning')
-      $('.navbar button[type=submit]').text("✖ Stop Backup")
-      pollBackupStatus('backup/status', cfg['pollFrequency'],
-        function (res) {
-          log("Received status update")
-        }) })
+    if (Date.now() - cfg['lastRun'] >= cfg['coolDownTime']) {
+      cfg['lastRun'] = Date.now()
+      $.post('backup/start', {}, function () {
+        $('.navbar button[type=submit]').toggleClass('btn-success')
+        $('.navbar button[type=submit]').toggleClass('btn-warning')
+        $('.navbar button[type=submit]').text("✖ Stop Backup")
+        pollBackupStatus('backup/status', cfg['pollFrequency'],
+          function (res) {
+            log("Received status update")
+          }) })
+    } else log('Restarting backup too fast, ignoring')
   } else if (force === undefined) noBackupRunning(startBackup)
     else {
     stopBackup()
