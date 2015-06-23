@@ -11,12 +11,25 @@ body {
 #log-files li a {
   color: #3c8b3c;
 }
-.navbar-brand:hover {
+.btn-success:hover,
+.btn-warning:hover,
+.btn-success:focus,
+.btn-warning:focus {
+  height: 40px;
+  margin-left: 8px;
+  margin-top: 5px;
+  padding: 1px 12px 2px 14px;
+  color: white;
   text-decoration: none;
   background-position: 0 2px;
-  background-image: -webkit-gradient(linear,left top,left bottom,from(#419641),to(#5cb85c));
   background-repeat: repeat;
   background-color: #419641;
+}
+.btn-success:hover {
+  background-image: -webkit-gradient(linear,left top,left bottom,from(#419641),to(#5cb85c));
+}
+.btn-warning:hover {
+  background-image: -webkit-gradient(linear,left top,left bottom,from(#f0ad4e),to(#eb9316));
 }
 #log-files li:last-child {
   margin-bottom: 12px;
