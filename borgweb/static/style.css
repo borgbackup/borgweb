@@ -1,12 +1,15 @@
+html { height: 100%; }
 body {
-    padding-top: 66px;
+  padding-top: 66px;
 }
 
 #log-files {
-    font-size: 18px;
+  font-size: 18px;
 }
 #log-text {
-    white-space: pre-wrap;
+  height: 100%;
+  white-space: pre-wrap;
+  line-height: 18px;
 }
 #log-files li a {
   color: #3c8b3c;
@@ -33,4 +36,6 @@ body {
 }
 #log-files li:last-child {
   margin-bottom: 12px;
+}
+#log-viewer {
 }
