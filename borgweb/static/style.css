@@ -2,6 +2,9 @@ html { height: 100%; }
 body {
   padding-top: 66px;
 }
+.pagination a {
+  color: #3c8b3c !important;
+}
 
 #log-files {
   font-size: 18px;
@@ -13,6 +16,19 @@ body {
 }
 #log-files li a {
   color: #3c8b3c;
+}
+#log-path {
+  margin-top: 0;
+  font-size: 20px !important;
+  padding-left: 9px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #ccc;
+  border-style: hidden;
+}
+#log-path input {
+  width:calc(100% - 46px); 
+  display: inline-block;
+  font-size: 18px;
 }
 .btn-success:hover,
 .btn-warning:hover,
@@ -38,6 +54,5 @@ body {
   margin-bottom: 12px;
 }
 #log-viewer {
-  min-height: calc(95vh - 120px) !important;
-  height: calc(95vh - 120px) !important;
+  height: calc(95vh - 160px) !important;
 }
