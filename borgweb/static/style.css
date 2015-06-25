@@ -38,4 +38,6 @@ body {
   margin-bottom: 12px;
 }
 #log-viewer {
+  min-height: calc(95vh - 120px) !important;
+  height: calc(95vh - 120px) !important;
 }
