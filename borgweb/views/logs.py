@@ -46,26 +46,31 @@ def _get_logs():
     return log_dir, sorted(log_files, reverse=True)
 
 
-def _get_log_lines(log_dir, log_file, offset, linecount=None):
+def _get_log_lines(log_dir, log_file, offset, linecount=None, direction=1):
     log_file = os.path.join(log_dir, log_file)
     with open(log_file, 'r') as f:
-        f.seek(offset)
-        if linecount is None:
-            log_lines = f.readlines()
+        if direction == 1:  # forwards
+            f.seek(offset)
+            if linecount is None:
+                log_lines = f.readlines()
+            else:
+                log_lines = []
+                for i in range(linecount):
+                    line = f.readline()
+                    if not line:
+                        break
+                    log_lines.append(line)
+            log_lines = [line.rstrip('\n') for line in log_lines]
+            offset = f.tell()
+        elif direction == -1:  # backwards
+            pass  # unsupported yet
         else:
-            log_lines = []
-            for i in range(linecount):
-                line = f.readline()
-                if not line:
-                    break
-                log_lines.append(line)
-        log_lines = [line.rstrip('\n') for line in log_lines]
-        offset = f.tell()
+            raise ValueError("give direction == 1 (forwards) or -1 (backwards)")
     return log_file, offset, log_lines
 
 
-@blueprint.route('/logs/<int:index>/<offset>:<linecount>')
-def get_log_fragment(index, offset, linecount):
+@blueprint.route('/logs/<int:index>/<offset>:<linecount>:<direction>')
+def get_log_fragment(index, offset, linecount, direction):
     try:
         offset = int(offset)
     except ValueError:
@@ -74,13 +79,19 @@ def get_log_fragment(index, offset, linecount):
         linecount = int(linecount)
     except ValueError:
         linecount = None
+    try:
+        direction = int(direction)
+        if direction not in (-1, 1):
+            raise ValueError
+    except ValueError:
+        direction = 1
     log_dir, log_files = _get_logs()
     try:
         log_file = log_files[index]
     except IndexError:
         log_file = ''
     if log_file:
-        log_file, offset, log_lines = _get_log_lines(log_dir, log_file, offset, linecount)
+        log_file, offset, log_lines = _get_log_lines(log_dir, log_file, offset, linecount, direction)
     else:
         log_lines = []
     log_lines = [(line_classifier(line), line) for line in log_lines]
@@ -106,4 +117,3 @@ def get_logs():
     log_dir, log_files = _get_logs()
     return jsonify(dict(dir=log_dir,
                         files=list(enumerate(log_files))))
-
