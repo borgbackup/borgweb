@@ -119,7 +119,7 @@ var updateLogFileList = function (logFiles) {
   log("Highlighting log # " + env['shownLog']['id'])
   $('#log-' + env['shownLog']['id']).focus()
 }
-var appendLog = function (data, overwrite) {
+var appendLog = function (data, overwrite) { log(data)
   // set status icon:
   $.getJSON('logs/' + env['shownLog']['id'], function (res) {
     $('#log-path').html('<!-- js generated --><span class="glyphicon glyphicon-' 
@@ -141,6 +141,7 @@ var overwriteLog = function (data) {
 }
 var showLog = function (id, offset, lines, direction) {
   var newLog = false
+  
   if (id !== env['shownLog']['id'] || ! isInt(offset)) {
     log("Displaying different log than before")
     $('#log-text').fadeOut(env['transitionTime'] * 0.5)
@@ -152,11 +153,11 @@ var showLog = function (id, offset, lines, direction) {
   else env['shownLog']['offset'] = 0
   if (isInt(offset)) env['shownLog']['offset'] = offset
   if (isInt(lines)) env['shownLog']['lines'] = lines
-  log("Now displaying log: " + env['shownLog']['id'])
-  var url = 'logs/' + env['shownLog']['id'] + '/' + env['shownLog']['offset']
-    + ':' + env['shownLog']['lines'] + ':' + direction
+  
   log("Fetching log (" + env['shownLog']['id'] + ', '
     + env['shownLog']['offset'] + ', ' + env['shownLog']['lines'] + ')')
+  var url = 'logs/' + env['shownLog']['id'] + '/' + env['shownLog']['offset']
+    + ':' + env['shownLog']['lines'] + ':' + direction
   setTimeout(function () { 
     if (newLog) $.getJSON(url, overwriteLog)
     else $.getJSON(url, appendLog)
