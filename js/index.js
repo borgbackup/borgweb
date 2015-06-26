@@ -116,8 +116,8 @@ var updateLogFileList = function (logFiles) {
       + '" onClick="window.showLog('
       + value[0] + ')">' + value[1] + '</a></li>' })
   $('#log-files').html(env.logFilesListHTML)
-  log("Highlighting log # " + parseInt(env['shownLog']['id']))
-  $('#log-' + parseInt(env['shownLog']['id'])).focus()
+  log("Highlighting log # " + env['shownLog']['id'])
+  $('#log-' + env['shownLog']['id']).focus()
 }
 var appendLog = function (data, overwrite) {
   // set status icon:
@@ -134,11 +134,12 @@ var appendLog = function (data, overwrite) {
   var logText = $('#log-text')
   if (env['shownLog']['offset'] === 0 || overwrite) logText.html('')
   data.lines.forEach(function (val, index) { logText.append(val[1] + '\n') })
-  $('#loadMore').remove()
   env['shownLog']['offset'] = data.offset
 }
-var overwriteLog = function (data) { appendLog(data, true) }
-var showLog = function (id, offset, lines) {
+var overwriteLog = function (data) {
+  appendLog(data, true)
+}
+var showLog = function (id, offset, lines, direction) {
   var newLog = false
   if (id !== env['shownLog']['id'] || ! isInt(offset)) {
     log("Displaying different log than before")
@@ -153,7 +154,7 @@ var showLog = function (id, offset, lines) {
   if (isInt(lines)) env['shownLog']['lines'] = lines
   log("Now displaying log: " + env['shownLog']['id'])
   var url = 'logs/' + env['shownLog']['id'] + '/' + env['shownLog']['offset']
-    + ':' + env['shownLog']['lines']
+    + ':' + env['shownLog']['lines'] + ':' + direction
   log("Fetching log (" + env['shownLog']['id'] + ', '
     + env['shownLog']['offset'] + ', ' + env['shownLog']['lines'] + ')')
   setTimeout(function () { 
@@ -162,16 +163,16 @@ var showLog = function (id, offset, lines) {
     $('#log-text').fadeIn(env['transitionTime'] * 0.5)
   }, env['transitionTime'] * 0.5)
 }
-var changePage = function (offset) {
-  showLog(env['shownLog']['id'], offset)
+var changePage = function (offset, direction) {
+  showLog(env['shownLog']['id'], offset, env['shownLog']['lines'], direction)
 }
 var nextPage = function () {
   log('Opening next log page')
-  changePage(env['shownLog']['nextOffset'])
+  changePage(env['shownLog']['offset'], 1)
 }
 var previousPage = function () {
   log('Opening previous log page')
-  changePage(env['shownLog']['previousOffset'])
+  changePage(env['shownLog']['offset'], -1)
 }
 
 /**
