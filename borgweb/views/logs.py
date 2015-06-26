@@ -130,8 +130,9 @@ def get_log(index):
     else:
         log_file = os.path.join(log_dir, log_file)
     with open(log_file, 'r') as f:
+        length = f.seek(0, os.SEEK_END)
         status = overall_classifier(f)
-    return jsonify(dict(filename=log_file, status=status))
+    return jsonify(dict(filename=log_file, status=status, length=length))
 
 
 @blueprint.route('/logs')
