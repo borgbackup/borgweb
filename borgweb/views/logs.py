@@ -51,21 +51,43 @@ def _get_log_lines(log_dir, log_file, offset, linecount=None, direction=1):
     with open(log_file, 'r') as f:
         if direction == 1:  # forwards
             f.seek(offset)
-            if linecount is None:
+            if linecount is None:  # read all, starting from offset
                 log_lines = f.readlines()
-            else:
+            else:  # read n lines, starting from offset
                 log_lines = []
                 for i in range(linecount):
                     line = f.readline()
                     if not line:
                         break
                     log_lines.append(line)
-            log_lines = [line.rstrip('\n') for line in log_lines]
             offset = f.tell()
         elif direction == -1:  # backwards
-            pass  # unsupported yet
+            log_lines = []
+            if linecount is None:  # read all, up to offset
+                start = 0
+            else:  # read n lines, up to offset
+                # we do not expect medium line length bigger than 1024
+                start = max(0, offset - linecount * 1024)
+            f.seek(start)
+            current = 0
+            while current < offset:
+                line = f.readline()
+                if not line:
+                    break
+                current = f.tell()
+                log_lines.append((current, line))
+            if linecount is None:
+                offset = 0
+                log_lines = [line for _, line in log_lines]
+            else:
+                try:
+                    offset = log_lines[-linecount-1][0]
+                except IndexError:
+                    offset = 0
+                log_lines = [line for _, line in log_lines[-linecount:]]
         else:
             raise ValueError("give direction == 1 (forwards) or -1 (backwards)")
+        log_lines = [line.rstrip('\n') for line in log_lines]
     return log_file, offset, log_lines
 
 
