@@ -3,18 +3,36 @@
 {% block content %}
     <div class="row">
         <div class="col-sm-3">
-            <h2 style="margin-top: 0; font-size: 20px; padding-left: 15px;
-                border-bottom: 1px solid #ccc;">Log files</h2>
             <ul id="log-files" class="nav nav-pills nav-stacked">
                 <li><a href="#">loading...</a></li>
             </ul>
         </div>
         <div class="col-sm-9" id="log-viewer">
-            <h2 id="log-path" style="margin-top: 0; font-size: 20px; padding-left: 9px;
-                border-bottom: 1px solid #ccc;">&nbsp;</h2>
+            <p id="log-path"></p>
             <pre id="log-text">Data missing.</pre><!-- /log-text -->
         </div><!-- /col-md-8 -->
     </div><!-- /row -->
+    <div class="row" style="margin-top: 37px;">
+      <div class="col-sm-3"> </div>
+      <div class="col-sm-9">
+        <nav>
+          <ul class="pagination">
+            <li>
+              <a href="#" aria-label="Previous" onClick="window.previousPage()">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li><a href="#" aria-label="Beginning of file" id="nextPage">Beginning…</a></li>
+            <li><a href="#" aria-label="End of file" style="color: #ccc;" id="previousPage">End of file</a></li>
+            <li>
+              <a href="#" aria-label="Next" onClick="window.nextPage()">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
     <script src="static/bundle.js"></script>
 {% endblock %}
 
