@@ -1,5 +1,5 @@
-var dateformat = require('dateformat')
-var $ = require('jquery')
+let $ = require('jquery')
+let dateformat = require('dateformat')
 
 /**
   ~~ Utility ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,7 +25,7 @@ ex.success = function (data) {
 ex.parseAnchor = function () {
   var url = window.location.href.toString()
   var idx = url.indexOf("#")
-  var anchor = (idx != -1) ? url.substring(idx+1) : ""
+  var anchor = (idx !== -1) ? url.substring(idx+1) : ""
   if (anchor) {
     var parts = anchor.split(';')
     var partsParsed = {}
@@ -34,11 +34,15 @@ ex.parseAnchor = function () {
       partsParsed[pair[0]] = pair[1]
     })
     return partsParsed
-  } else return {'log': 0}
+  } else {
+    ex.log('Anchor not available')
+    return {'log': 0}
+  }
 }
 
 ex.determineLineCount = function () {
-  return Math.floor($('#log-text').height() / 18)
+  let availableLines = Math.floor($('#log-text').height() / 18)
+  return availableLines
 }
 
 module.exports = ex

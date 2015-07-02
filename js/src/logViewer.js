@@ -1,86 +1,108 @@
-var $ = require('jquery')
-var env = require('./env')
-var util = require('./util')
-var log = require('./util').log
+let $ = require('jquery')
+let env = require('./env')
+let util = require('./util')
+let log = util.log
+let isInt = util.isInt
 
-/**
-  ~~ UI updaters ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-var ex = {}
+let logText = $('#log-text')
 
-ex.updateLogFileList = function (logFiles) {
-  log("Updating log file list")
-  env.logFilesListHTML = []
-  $.each(logFiles.files, function (key, value) {
-    env.logFilesListHTML += '<li><a href="#log:' + value[0] + '" id="log-' + value[0]
-      + '" onClick="window.showLog('
-      + value[0] + ')">' + value[1] + '</a></li>' })
-  $('#log-files').html(env.logFilesListHTML)
-  log("Highlighting log # " + env['shownLog']['id'])
-  $('#log-' + env['shownLog']['id']).focus()
+function updateLogFileList () {
+  let logFilesListHTML = []
+  $.getJSON('logs', res =>{
+    $.each(res.files, (key, value) =>{
+      logFilesListHTML += `<li><a onClick="window.switchToLog(${ value[0] +1 })"
+        id="log-${ value[0] }">${ value[1] }</a></li>` })
+    $('#log-files').html(logFilesListHTML)
+    
+    // todo: better highlighting, focus is ephemeral
+    //$('#log-' + env.shownLog.id).focus()
+  })
 }
 
-ex.appendLog = function (data, overwrite) {
-  // set status icon:
-  $.getJSON('logs/' + env['shownLog']['id'], function (res) {
+function getSetState (state) {
+  state = state || {}
+  let anchor = util.parseAnchor()
+  anchor = {
+    log:      state.log     ||  anchor.log      || 1,
+    offset:   state.offset  ||  anchor.offset   || 1 }
+  document.location.hash = 
+    `#log:${ anchor.log };offset:${ anchor.offset }`
+  return anchor
+}
+
+function updatePathAndStatus (state) {
+  if (state.log === env.lastLogID) ;
+  else $.getJSON('logs/' + (+state.log -1), function (res) {
     $('#log-path').html('<!-- js generated --><span class="glyphicon glyphicon-' 
-      + env['icon'][res.status][0]
-      + '" aria-hidden="true" style="font-size: 34px; color: ' + env['icon'][res.status][1]
+      + env.icon[res.status][0]
+      + '" aria-hidden="true" style="font-size: 34px; color: ' + env.icon[res.status][1]
       + '; width: 42px; margin-right: 4px; vertical-align: middle;"></span>'
       + '<input class="form-control" type="text" value="' + res.filename
-      + '" readonly onClick="this.select();"><!-- /js generated -->' )
+      + '" readonly onClick="this.select();"><!-- /js generated -->' ) })
+}
+
+function insertLogData (linesArray) {
+  linesArray.forEach((val, index) =>{ logText.append(val[1] + '\n') })
+}
+
+function clearLog () { $('#log-text').html('') }
+
+let fadeLog = {
+  out: x =>{
+    setTimeout(clearLog, env.transitionTime * 0.5)
+    logText.fadeOut(env.transitionTime * 0.5) },
+  in: x =>{ logText.fadeIn(env.transitionTime * 0.5) }
+}
+
+function displayLogSection (state, availableLines) {
+  let url = `logs/${ state.log -1 }/${ state.offset -1 }:${ availableLines }:1`
+  $.get(url, res =>{
+    if (state.log === env.lastLogID) {
+      clearLog()
+      insertLogData(res.lines) }
+    else {
+      env.lastLogID = state.log
+      fadeLog.out()
+      setTimeout(x =>{
+        insertLogData(res.lines)
+        fadeLog.in()
+      }, env.transitionTime * 0.5) }
   })
-  
-  // append log text:
-  var logText = $('#log-text')
-  if (env['shownLog']['offset'] === 0 || overwrite) logText.html('')
-  data.lines.forEach(function (val, index) { logText.append(val[1] + '\n') })
-  env['shownLog']['offset'] = data.offset
 }
 
-ex.overwriteLog = function (data) {
-  ex.appendLog(data, true)
+function render (availableLines) {
+  availableLines = availableLines || util.determineLineCount()
+  let state = getSetState()
+  updatePathAndStatus(state)
+  displayLogSection(state, availableLines)
 }
 
-ex.showLog = function (id, offset, lines, direction) {
-  var newLog = false
-  
-  if (id !== env['shownLog']['id'] || ! util.isInt(offset)) {
-    log("Displaying different log than before")
-    $('#log-text').fadeOut(env['transitionTime'] * 0.5)
-    var args = util.parseAnchor()
-    env['shownLog']['id'] = args['log'] || 0
-    env['shownLog']['offset'] = 0
-    newLog = true }
-  if (util.isInt(id)) env['shownLog']['id'] =  id
-  else env['shownLog']['offset'] = 0
-  if (util.isInt(offset)) env['shownLog']['offset'] = offset
-  if (util.isInt(lines)) env['shownLog']['lines'] = lines
-  
-  log("Fetching log (" + env['shownLog']['id'] + ', '
-    + env['shownLog']['offset'] + ', ' + env['shownLog']['lines'] + ')')
-  var url = 'logs/' + env['shownLog']['id'] + '/' + env['shownLog']['offset']
-    + ':' + env['shownLog']['lines'] + ':' + direction
-  setTimeout(function () { 
-    if (newLog) $.getJSON(url, ex.overwriteLog)
-    else $.getJSON(url, ex.appendLog)
-    $('#log-text').fadeIn(env['transitionTime'] * 0.5)
-  }, env['transitionTime'] * 0.5)
+function switchToLog (id) {
+  getSetState({ log: id, offset: 1 })
+  render()
 }
 
-ex.changePage = function (offset, direction) {
-  log(env['shownLog']['id'], offset, env['shownLog']['lines'], direction)
-  ex.showLog(env['shownLog']['id'], offset, env['shownLog']['lines'], direction)
+function getNextOffset (state, direction, availableLines, callback) {
+  let url = `logs/${ state.log -1 }/${ state.offset -1 }`
+    + `:${ availableLines }:${ direction }`
+  $.get(url, res =>{ callback(state, res, availableLines) })
 }
 
-ex.nextPage = function () {
-  log('Opening next log page')
-  ex.changePage(env['shownLog']['offset'], 1)
+function switchPage (direction) {
+  var availableLines = util.determineLineCount()
+  getNextOffset(getSetState(), direction, availableLines,
+    (state, res, availableLines) =>{
+      getSetState({ log: state.log, offset: res.offset +1 })
+      render(availableLines) })
 }
 
-ex.previousPage = function () {
-  log('Opening previous log page')
-  ex.changePage(env['shownLog']['offset'], -1)
-}
+function nextPage () { switchPage(1) }
+function previousPage () { switchPage(-1) }
 
-module.exports = ex
+module.exports = {
+  render: render,
+  switchToLog: switchToLog,
+  nextPage: nextPage,
+  previousPage: previousPage,
+  updateLogFileList: updateLogFileList
+}

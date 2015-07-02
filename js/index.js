@@ -8,18 +8,18 @@ var logViewer = require('./src/logViewer')
 /**
   ~~ UI callables ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-window.showLog = function (id, offset, lines) { log(id, offset, lines) }
 window.startBackup = borg.startBackup
+window.switchToLog = logViewer.switchToLog
 window.nextPage = logViewer.nextPage
 window.previousPage = logViewer.previousPage
 
 /**
   ~~ Site init ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-env['shownLog']['lines'] = util.determineLineCount()
-$(window).resize(function () { log('Windows resized')
-  env['shownLog']['lines'] = util.determineLineCount()
-  log('New line count: ' + env['shownLog']['lines']) })
-$.getJSON('logs', logViewer.updateLogFileList)
-logViewer.showLog()
 
+
+logViewer.updateLogFileList()
+logViewer.render()
+
+
+$(window).resize(function () { log('Windows resized') })

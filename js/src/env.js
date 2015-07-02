@@ -2,10 +2,9 @@
   ~~ Environment ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 module.exports = {
-  lastSelectedLog: NaN,
+  lastSelectedLog: null,
   pollFrequency: 300,
   transitionTime: 170,
-  lastRun: 0,
   coolDownTime: 1000,
   icon: {
     success: ['ok-circle', '#5cb85c'],
@@ -13,8 +12,8 @@ module.exports = {
     danger: ['remove-circle', '#c9302c']
   },
   
-  logFilesList: [],
-  logFilesListHTML: "",
-  shownLog: {
-    id: 0, offset: 0, lines: 75, data: [], nextOffset: 0, previousOffset: 0 }
+  lastRun: 0,
+  lastLogID: null,
+  lastDirection: null,
+  nextOffset: null
 }

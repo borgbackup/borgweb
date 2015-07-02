@@ -16,8 +16,10 @@ body {
 }
 #log-files li a {
   color: #3c8b3c;
+  cursor: pointer;
 }
 #log-path {
+  height: 36px;
   margin-top: 0;
   font-size: 20px !important;
   padding-left: 9px;
