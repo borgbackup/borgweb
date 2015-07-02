@@ -45,7 +45,7 @@ function insertLogData (linesArray) {
   linesArray.forEach((val, index) =>{ logText.append(val[1] + '\n') })
 }
 
-function clearLog () { $('#log-text').html('') }
+function clearLog () { logText.html('') }
 
 let fadeLog = {
   out: x =>{
