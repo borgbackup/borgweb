@@ -2,6 +2,9 @@ html { height: 100%; }
 body {
   padding-top: 66px;
 }
+.pagination {
+  margin: 12px 0 0;
+}
 .pagination a {
   color: #3c8b3c !important;
 }
