@@ -42,7 +42,14 @@ function updatePathAndStatus (state) {
 }
 
 function insertLogData (linesArray) {
-  linesArray.forEach((val, index) =>{ logText.append(val[1] + '\n') })
+  let [html, lineStatus] = [``, ``] 
+  linesArray.forEach((val, index) =>{
+    lineStatus = env.logLine[val[0]]
+    html = lineStatus ? `<mark class="${ env.logLine[val[0]][0] }"
+      style="background-color: ${ env.logLine[val[0]][1] };">` : ``
+    html += val[1] + '\n'
+    html += lineStatus ? `</mark>` : ``
+    logText.append(html) })
 }
 
 function clearLog () { logText.html('') }
