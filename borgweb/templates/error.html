@@ -1,1 +1,25 @@
-{{ error }}
+{% extends "_layout.html" %}
+
+{% block content %}
+  <style>
+    .error { padding-bottom: 85px; }
+    .error .label-default:hover { background-color: black; }
+    .error a:hover { text-decoration: none; }
+    .error h1 { margin: 0 0 20px; }
+    .error hr { margin-top: 0px; margin-bottom: 10px; border: 0; border-top: 1px solid #ccc; }
+    .error h1 hr {  margin-bottom: 25px; }
+  </style>
+
+  <div class="jumbotron error">
+    <h1>
+      <small>error:</small>
+      <hr>
+      {{ error }}
+    </h1>
+    <hr>
+    <a href="https://borgbackup.github.io/borgweb/"><span class="label label-default">Documentation</span></a>
+    <a href="https://webchat.freenode.net/?channels=%23borgbackup"><span class="label label-default">IRC Channel</span></a>
+    <a href="mailto:borgbackup@librelist.com"><span class="label label-default">Mailinglist</span></a>
+    <a href="https://github.com/borgbackup/borgweb/issues"><span class="label label-default">Issue Tracker</span></a>
+  </div>
+{% endblock %}
