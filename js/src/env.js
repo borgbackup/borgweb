@@ -18,5 +18,7 @@ module.exports = {
   lastRun: 0,
   lastLogID: null,
   lastDirection: null,
-  nextOffset: null
+  nextOffset: null,
+  lastRendering: 0,
+  reRenderCoolDown: 300
 }

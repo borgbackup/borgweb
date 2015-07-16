@@ -21,5 +21,11 @@ window.previousPage = logViewer.previousPage
 logViewer.updateLogFileList()
 logViewer.render()
 
-
-$(window).resize(function () { log('Windows resized') })
+/**
+  ~~ Event listeners ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+$(window).resize(function () {
+  if (Date.now() - env['lastRendering'] >= env['reRenderCoolDown']) {
+    log('Re-rendering')
+    env['lastRendering'] = Date.now()
+    setTimeout(logViewer.render, env['reRenderCoolDown'] / 2) } })
