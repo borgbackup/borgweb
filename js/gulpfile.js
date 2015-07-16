@@ -1,27 +1,29 @@
 var gulp = require('gulp')
 var log = require('gulp-util').log
 var lib = require('./gulpfile.lib.js')
+var browserSync = require('browser-sync').create()
 
-var srcPth = './'
-var src = srcPth + 'index.js'
-var bndlPth = '../borgweb/static/'
-var bndl =  bndlPth + 'bundle.js'
+var files = {
+  js: './index.js',
+  jsBndl: '../borgweb/static/bundle.js',
+  css: '../borgweb/static/style.css',
+  cssBndl: '../borgweb/static/bundle.css'
+}
 var buildID = 1
-
 var newBuildLog = function () {
   log("Build # " + lib.log (buildID++, 1)
-  + " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-}
+  + " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~") }
 
 gulp.task ('watch', function () {
-  newBuildLog()
-  lib.generateBundle(src, bndl, true)
+  newBuildLog(); browserSync.init({ proxy: 'localhost:5000', open: false })
+  lib.generateBundle(files.js, files.jsBndl, true)
     
-  gulp.watch([src, srcPth + 'src/**/*.js'], function (f) {
-    if (f.type == 'changed') {
+  gulp.watch([files.js, 'src/**/*.js'], function (ev) {
+    if (ev.type == 'changed') {
       newBuildLog()
-      log("Changed: " + f.path)
-      var ret = lib.generateBundle(src, bndl)
+      log("Changed: " + ev.path)
+      var ret = lib.generateBundle(files.js, files.jsBndl)
+      setTimeout(function () { browserSync.reload() }, 150) // todo
       return ret
     }
   })

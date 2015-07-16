@@ -2,6 +2,9 @@ html { height: 100%; }
 body {
   padding-top: 66px;
 }
+.pagination {
+  margin: 12px 0 0;
+}
 .pagination a {
   color: #3c8b3c !important;
 }
@@ -14,10 +17,18 @@ body {
   white-space: pre-wrap;
   line-height: 18px;
 }
+#log-text mark {
+  width: calc(100% + 19px);
+  display: inline-block;
+  padding-left: 9.5px; padding-right: 9.5px;
+  margin-left: -9.5px; margin-right: -9.5px;
+}
 #log-files li a {
   color: #3c8b3c;
+  cursor: pointer;
 }
 #log-path {
+  height: 36px;
   margin-top: 0;
   font-size: 20px !important;
   padding-left: 9px;
