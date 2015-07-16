@@ -4,9 +4,8 @@ let dateformat = require('dateformat')
 /**
   ~~ Utility ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-var ex = {}
 
-ex.log = function(){
+function log () {
   var args = Array.prototype.slice.call(arguments)
   var time = '[' + dateformat(new Date(), 'HH:MM:ss') + ']'
   args.unshift(time)
@@ -14,15 +13,15 @@ ex.log = function(){
   return this
 }
 
-ex.isInt = function (n) {
+function isInt (n) {
   return n % 1 === 0
 }
 
-ex.success = function (data) {
+function success (data) {
   logFiles = data.log_files
 }
 
-ex.parseAnchor = function () {
+function parseAnchor () {
   var url = window.location.href.toString()
   var idx = url.indexOf("#")
   var anchor = (idx !== -1) ? url.substring(idx+1) : ""
@@ -35,14 +34,20 @@ ex.parseAnchor = function () {
     })
     return partsParsed
   } else {
-    ex.log('Anchor not available')
+    log('Anchor not available')
     return {'log': 0}
   }
 }
 
-ex.determineLineCount = function () {
+function determineLineCount () {
   let availableLines = Math.floor($('#log-text').height() / 18)
   return availableLines
 }
 
-module.exports = ex
+module.exports = {
+  log: log,
+  isInt: isInt,
+  success: success,
+  parseAnchor: parseAnchor,
+  determineLineCount: determineLineCount
+}

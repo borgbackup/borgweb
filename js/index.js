@@ -7,6 +7,8 @@ var logViewer = require('./src/logViewer')
 
 /**
   ~~ UI callables ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  All globally available variables should be declared here.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 window.startBackup = borg.startBackup
 window.switchToLog = logViewer.switchToLog
@@ -16,8 +18,6 @@ window.previousPage = logViewer.previousPage
 /**
   ~~ Site init ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-
-
 logViewer.updateLogFileList()
 logViewer.render()
 

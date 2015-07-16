@@ -4,6 +4,9 @@ let util = require('./util')
 let log = util.log
 let isInt = util.isInt
 
+/**
+  ~~ Log viewer frontend ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 let logText = $('#log-text')
 
 function updateLogFileList () {
@@ -13,9 +16,6 @@ function updateLogFileList () {
       logFilesListHTML += `<li><a onClick="window.switchToLog(${ value[0] +1 })"
         id="log-${ value[0] }">${ value[1] }</a></li>` })
     $('#log-files').html(logFilesListHTML)
-    
-    // todo: better highlighting, focus is ephemeral
-    //$('#log-' + env.shownLog.id).focus()
   })
 }
 
@@ -33,12 +33,15 @@ function getSetState (state) {
 function updatePathAndStatus (state) {
   if (state.log === env.lastLogID) ;
   else $.getJSON('logs/' + (+state.log -1), function (res) {
-    $('#log-path').html('<!-- js generated --><span class="glyphicon glyphicon-' 
-      + env.icon[res.status][0]
-      + '" aria-hidden="true" style="font-size: 34px; color: ' + env.icon[res.status][1]
-      + '; width: 42px; margin-right: 4px; vertical-align: middle;"></span>'
-      + '<input class="form-control" type="text" value="' + res.filename
-      + '" readonly onClick="this.select();"><!-- /js generated -->' ) })
+    $('#log-path').html(`
+      <!-- js generated -->
+        <span class="glyphicon glyphicon-${ env.icon[res.status][0] }"
+          aria-hidden="true" style="font-size: 34px;
+          color: ${ env.icon[res.status][1] }; width: 42px;
+          margin-right: 4px; vertical-align: middle;"></span
+        ><input class="form-control" type="text"
+          value="${ res.filename }" readonly onClick="this.select();">
+      <!-- /js generated -->`) })
 }
 
 function insertLogData (linesArray) {
