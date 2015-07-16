@@ -4,7 +4,7 @@ logs view
 
 import os
 
-from flask import current_app, render_template, jsonify
+from flask import current_app, render_template, jsonify, abort
 
 from . import blueprint
 
@@ -111,11 +111,8 @@ def get_log_fragment(index, offset, linecount, direction):
     try:
         log_file = log_files[index]
     except IndexError:
-        log_file = ''
-    if log_file:
-        log_file, offset, log_lines = _get_log_lines(log_dir, log_file, offset, linecount, direction)
-    else:
-        log_lines = []
+        abort(404)
+    log_file, offset, log_lines = _get_log_lines(log_dir, log_file, offset, linecount, direction)
     log_lines = [(line_classifier(line), line) for line in log_lines]
     return jsonify(dict(lines=log_lines, offset=offset))
 
@@ -126,13 +123,13 @@ def get_log(index):
     try:
         log_file = log_files[index]
     except IndexError:
-        log_file = ''
+        abort(404)
     else:
         log_file = os.path.join(log_dir, log_file)
     with open(log_file, 'r') as f:
         length = f.seek(0, os.SEEK_END)
         status = overall_classifier(f)
-    return jsonify(dict(filename=log_file, status=status, length=length))
+        return jsonify(dict(filename=log_file, status=status, length=length))
 
 
 @blueprint.route('/logs')
