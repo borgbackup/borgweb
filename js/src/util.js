@@ -22,9 +22,7 @@ function success (data) {
 }
 
 function parseAnchor () {
-  var url = window.location.href.toString()
-  var idx = url.indexOf("#")
-  var anchor = (idx !== -1) ? url.substring(idx+1) : ""
+  var anchor = window.location.hash.slice(1)
   if (anchor) {
     var parts = anchor.split(';')
     var partsParsed = {}
