@@ -43,8 +43,12 @@ setup(
     ],
     packages=['borgweb', 'borgweb.views', 'borgweb._tests'],
     package_data={
-        'borgweb.static': ['*', ],
-        'borgweb.templates': ['*.html', ],
+        'borgweb': [
+            'static/*',
+            'static/bootstrap/*',
+            'static/fonts/*',
+            'templates/*',
+        ],
     },
     include_package_data=True,
     scripts=['scripts/borgweb'],
