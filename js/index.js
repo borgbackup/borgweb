@@ -15,6 +15,7 @@ window.switchToLog = logViewer.switchToLog
 window.nextPage = logViewer.nextPage
 window.previousPage = logViewer.previousPage
 window.firstPage = logViewer.firstPage
+window.lastPage = logViewer.lastPage
 
 /**
   ~~ Site init ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

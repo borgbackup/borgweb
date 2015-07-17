@@ -111,6 +111,15 @@ function switchPage (direction) {
       render(availableLines) })
 }
 
+function lastPage () {
+  let state = getSetState()
+  let url = `logs/${ state.log -1 }`
+  $.get( url, res =>{
+    let logLength = res.length
+    state.offset = logLength
+    getSetState(state)
+    switchPage(-1) }) }
+
 function nextPage () { switchPage(1) }
 function previousPage () { switchPage(-1) }
 function firstPage () {
@@ -125,5 +134,6 @@ module.exports = {
   nextPage: nextPage,
   previousPage: previousPage,
   updateLogFileList: updateLogFileList,
-  firstPage: firstPage
+  firstPage: firstPage,
+  lastPage: lastPage
 }
