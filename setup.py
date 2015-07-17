@@ -41,7 +41,12 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Topic :: System :: Archiving :: Backup',
     ],
-    packages=['borgweb', 'borgweb._tests'],
+    packages=['borgweb', 'borgweb.views', 'borgweb._tests'],
+    package_data={
+        'borgweb.static': ['*', ],
+        'borgweb.templates': ['*.html', ],
+    },
+    include_package_data=True,
     scripts=['scripts/borgweb'],
     cmdclass=versioneer.get_cmdclass(),
     install_requires=[

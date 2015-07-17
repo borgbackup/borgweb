@@ -2,5 +2,7 @@ include README.rst AUTHORS LICENSE CHANGES MANIFEST.in versioneer.py
 recursive-include docs *
 recursive-exclude docs *.pyc
 recursive-exclude docs *.pyo
+recursive-include borgweb/static *
+recursive-include borgweb/templates *
 prune docs/_build
 include borgweb/_version.py
