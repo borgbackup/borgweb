@@ -99,7 +99,7 @@ function getNextOffset (state, direction, availableLines, callback) {
     let subsequentUrl = `logs/${ state.log -1 }/${ res.offset +1 }`
       + `:${ availableLines }:${ direction }`
     $.get( subsequentUrl, subsequentRes =>{
-      if (subsequentRes.lines.length === 0) return;
+      if (subsequentRes.lines.length === 0) getSetState(state)
       else callback(state, res, availableLines) }) })
 }
 
