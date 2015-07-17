@@ -40,7 +40,7 @@ setup(
     packages=find_packages(),
     package_data={
         'borgweb': [
-            'static/*',
+            'static/*.*',  # do NOT match the directories bootstrap and fonts!
             'static/bootstrap/*',
             'static/fonts/*',
             'templates/*',
