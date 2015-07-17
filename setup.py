@@ -2,12 +2,6 @@
 import sys
 
 import versioneer
-versioneer.VCS = 'git'
-versioneer.style = 'pep440'
-versioneer.versionfile_source = 'borgweb/_version.py'
-versioneer.versionfile_build = 'borgweb/_version.py'
-versioneer.tag_prefix = ''
-versioneer.parentdir_prefix = 'borgweb-'  # dirname like 'myproject-1.2.0'
 
 min_python = (3, 2)
 if sys.version_info < min_python:
@@ -21,8 +15,6 @@ except ImportError:
 
 with open('README.rst', 'r') as fd:
     long_description = fd.read()
-
-cmdclass = versioneer.get_cmdclass()
 
 setup(
     name='borgweb',
@@ -51,7 +43,7 @@ setup(
     ],
     packages=['borgweb', 'borgweb._tests'],
     scripts=['scripts/borgweb'],
-    cmdclass=cmdclass,
+    cmdclass=versioneer.get_cmdclass(),
     install_requires=[
         'flask',
     ],
