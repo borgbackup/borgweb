@@ -49,7 +49,11 @@ setup(
     },
     include_package_data=True,
     zip_safe=False,
-    scripts=['scripts/borgweb'],
+    entry_points={
+        'console_scripts': [
+            'borgweb = borgweb.app:main',
+        ]
+    },
     cmdclass=versioneer.get_cmdclass(),
     install_requires=[
         'flask',
