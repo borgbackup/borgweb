@@ -8,10 +8,7 @@ if sys.version_info < min_python:
     print("BorgWeb requires Python %d.%d or later" % min_python)
     sys.exit(1)
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup, find_packages
 
 with open('README.rst', 'r') as fd:
     long_description = fd.read()
@@ -41,7 +38,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Topic :: System :: Archiving :: Backup',
     ],
-    packages=['borgweb', 'borgweb.views', 'borgweb._tests'],
+    packages=find_packages(),
     package_data={
         'borgweb': [
             'static/*',
@@ -51,6 +48,7 @@ setup(
         ],
     },
     include_package_data=True,
+    zip_safe=False,
     scripts=['scripts/borgweb'],
     cmdclass=versioneer.get_cmdclass(),
     install_requires=[
