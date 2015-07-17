@@ -14,6 +14,7 @@ window.startBackup = borg.startBackup
 window.switchToLog = logViewer.switchToLog
 window.nextPage = logViewer.nextPage
 window.previousPage = logViewer.previousPage
+window.firstPage = logViewer.firstPage
 
 /**
   ~~ Site init ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

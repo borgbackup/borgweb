@@ -113,11 +113,17 @@ function switchPage (direction) {
 
 function nextPage () { switchPage(1) }
 function previousPage () { switchPage(-1) }
+function firstPage () {
+  let state = getSetState()
+  state.offset = 1
+  setTimeout( x=>{ getSetState(state) }, 1) // prevent anchor loss
+  switchToLog(state.log) }
 
 module.exports = {
   render: render,
   switchToLog: switchToLog,
   nextPage: nextPage,
   previousPage: previousPage,
-  updateLogFileList: updateLogFileList
+  updateLogFileList: updateLogFileList,
+  firstPage: firstPage
 }
