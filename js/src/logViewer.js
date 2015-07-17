@@ -95,7 +95,12 @@ function switchToLog (id) {
 function getNextOffset (state, direction, availableLines, callback) {
   let url = `logs/${ state.log -1 }/${ state.offset -1 }`
     + `:${ availableLines }:${ direction }`
-  $.get(url, res =>{ callback(state, res, availableLines) })
+  $.get( url, res =>{
+    let subsequentUrl = `logs/${ state.log -1 }/${ res.offset +1 }`
+      + `:${ availableLines }:${ direction }`
+    $.get( subsequentUrl, subsequentRes =>{
+      if (subsequentRes.lines.length === 0) return;
+      else callback(state, res, availableLines) }) })
 }
 
 function switchPage (direction) {
