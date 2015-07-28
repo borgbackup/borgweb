@@ -8,6 +8,9 @@ THIS IS SOFTWARE IN DEVELOPMENT, DECIDE YOURSELF WHETHER IT FITS YOUR NEEDS.
 
 Please also see the `LICENSE <https://github.com/borgbackup/borgweb/blob/master/LICENSE>`_ for more information.
 
+.. image:: https://cdn.pbrd.co/images/2ic9v4hE.png
+  :alt: Screenshot of BorgWeb
+
 
 Main features
 ~~~~~~~~~~~~~
