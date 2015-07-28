@@ -30,6 +30,7 @@ To install the complete environment for development you can do the following: ::
     
     # Start the local Flask webserver:
     cd ../../
+    mkdir logs
     ./borg-env/bin/borgweb
     
     # Start the watch process and Browsersync
