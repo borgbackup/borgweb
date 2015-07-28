@@ -14,6 +14,28 @@ Currently, only installation from git repo checkout is supported.
 Use pip install -e . from the top-level |project_name| directory to install
 it into same virtualenv as you use for |project_name_backup|.
 
+To install the complete environment for development you can do the following: ::
+
+    # Install Python code and dependencies:
+    virtualenv --python=python3 borg-env
+    source borg-env/bin/activate
+    pip install cython tox pytest
+    git clone https://github.com/borgbackup/borgweb.git
+    cd borgweb
+    pip install -e .
+    
+    # Install JS code and dependencies:
+    cd js
+    npm install
+    
+    # Start the local Flask webserver:
+    cd ../../
+    ./borg-env/bin/borgweb
+    
+    # Start the watch process and Browsersync
+    # In another shell navigate to `borgweb/js` and enter:
+    gulp watch
+
 
 Configuration
 =============
