@@ -4,7 +4,7 @@ var util = require('./util')
 var logViewer = require('./logViewer')
 
 /**
-  ~~ BorgBackup interaction ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~ Backup interaction ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
 function noBackupRunning (callback) {

@@ -1,6 +1,6 @@
 var $ = require('jquery')
 var env = require('./src/env')
-var borg = require('./src/borg')
+var backup = require('./src/backup')
 var util = require('./src/util')
 var log = require('./src/util').log
 var logViewer = require('./src/logViewer')
@@ -10,7 +10,7 @@ var logViewer = require('./src/logViewer')
   All globally available variables should be declared here.
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-window.startBackup = borg.startBackup
+window.startBackup = backup.startBackup
 window.switchToLog = logViewer.switchToLog
 window.nextPage = logViewer.nextPage
 window.previousPage = logViewer.previousPage
