@@ -19,7 +19,7 @@ To install the complete environment for development you can do the following: ::
     # Install Python code and dependencies:
     virtualenv --python=python3 borg-env
     source borg-env/bin/activate
-    pip install cython tox pytest
+    pip install tox pytest
     git clone https://github.com/borgbackup/borgweb.git
     cd borgweb
     pip install -e .
