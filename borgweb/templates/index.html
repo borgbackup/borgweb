@@ -3,9 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="col-sm-3">
-            <ul id="log-files" class="nav nav-pills nav-stacked">
-                <li><a href="#">loading...</a></li>
-            </ul>
+            <ul id="log-files" class="nav nav-pills nav-stacked"></ul>
         </div>
         <div class="col-sm-9">
           <div class="row">
@@ -15,7 +13,17 @@
           </div><!-- /row -->
           <div class="row">
             <div class="col-sm-12" id="log-viewer">
-              <pre id="log-text">Data missing.</pre><!-- /log-text -->
+              <div id="no-logs-error" class="jumbotron error" style="display: none;">
+                <h1>
+                  No logs found
+                </h1>
+                <hr>
+                <a href="https://borgbackup.github.io/borgweb/"><span class="label label-default">Documentation</span></a>
+                <a href="https://webchat.freenode.net/?channels=%23borgbackup"><span class="label label-default">IRC Channel</span></a>
+                <a href="mailto:borgbackup@librelist.com"><span class="label label-default">Mailinglist</span></a>
+                <a href="https://github.com/borgbackup/borgweb/issues"><span class="label label-default">Issue Tracker</span></a>
+              </div>
+              <pre id="log-text"></pre>
             </div><!-- /col-sm-12 -->
           </div><!-- /row -->
           <div class="row" style="width: 100%;">

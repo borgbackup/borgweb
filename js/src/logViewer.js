@@ -8,6 +8,7 @@ let isInt = util.isInt
   ~~ Log viewer frontend ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 let logText = $('#log-text')
+let noLogsError = $('#no-logs-error')
 
 function updateLogFileList () {
   let logFilesListHTML = []
@@ -67,6 +68,7 @@ let fadeLog = {
 function displayLogSection (state, availableLines) {
   let url = `logs/${ state.log -1 }/${ state.offset -1 }:${ availableLines }:1`
   $.get(url, res =>{
+    noLogsError.hide()
     if (state.log === env.lastLogID) {
       clearLog()
       insertLogData(res.lines) }
@@ -77,6 +79,10 @@ function displayLogSection (state, availableLines) {
         insertLogData(res.lines)
         fadeLog.in()
       }, env.transitionTime * 0.5) }
+  })
+  .fail(err => {
+    noLogsError.show()
+    logText.hide()
   })
 }
 
