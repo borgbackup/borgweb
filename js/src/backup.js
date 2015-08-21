@@ -12,9 +12,7 @@ function noBackupRunning (callback) {
     var backupRunning = resp.rc === null
     if (backupRunning) util.log(`▶ Backup in progress`)
     else util.log(`✖ No backup in progress`)
-    callback(!backupRunning)
-  })
-}
+    callback(!backupRunning) }) }
 
 function pollBackupStatus (endpoint, ms, callback) {
   noBackupRunning(function (notRunning) {
@@ -23,20 +21,17 @@ function pollBackupStatus (endpoint, ms, callback) {
       $('.navbar button[type=submit]').toggleClass('btn-warning')
       $('.navbar button[type=submit]').text(`▶ Start Backup`)
       $.getJSON('logs', logViewer.updateLogFileList)
-      logViewer.switchToLog(1)
-    } else {
+      logViewer.switchToLog(1) }
+    else {
       util.log(`Polling backup status`)
       $.getJSON('backup/status', callback)
-      setTimeout(function () { pollBackupStatus(endpoint, ms, callback) }, ms)
-    }
-  })
-}
+      setTimeout(function () {
+				pollBackupStatus(endpoint, ms, callback) }, ms) } }) }
 
 function stopBackup () {
   util.log(`Terminating (eventually killing) the backup process`)
   $.post('backup/stop', {}, function (res) {
-    util.log(`Message: '${ res.msg }', RC: '${ res.rc }'`) })
-}
+    util.log(`Message: '${ res.msg }', RC: '${ res.rc }'`) }) }
 
 function startBackup (force) {
   if (force) {
@@ -49,14 +44,10 @@ function startBackup (force) {
         $('.navbar button[type=submit]').text(`✖ Stop Backup`)
         pollBackupStatus('backup/status', env['pollFrequency'],
           function (res) {
-            util.log(`Received status update`)
-          }) })
-    } else util.log('Restarting backup too fast, ignoring')
-  } else if (force === undefined) noBackupRunning(startBackup)
-    else {
-    stopBackup()
-  }
-}
+            util.log(`Received status update`) }) }) }
+    else util.log('Restarting backup too fast, ignoring') }
+  else if (force === undefined) noBackupRunning(startBackup)
+    else stopBackup() }
 
 module.exports = {
   noBackupRunning: noBackupRunning,

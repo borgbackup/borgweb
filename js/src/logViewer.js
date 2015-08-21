@@ -16,9 +16,7 @@ function updateLogFileList () {
     $.each(res.files, (key, value) =>{
       logFilesListHTML += `<li><a onClick="window.switchToLog(${ value[0] +1 })"
         id="log-${ value[0] }">${ value[1] }</a></li>` })
-    $('#log-files').html(logFilesListHTML)
-  })
-}
+    $('#log-files').html(logFilesListHTML) }) }
 
 function getSetState (state) {
   state = state || {}
@@ -28,8 +26,7 @@ function getSetState (state) {
     offset:   state.offset  ||  anchor.offset   || 1 }
   document.location.hash = 
     `#log:${ anchor.log };offset:${ anchor.offset }`
-  return anchor
-}
+  return anchor }
 
 function updatePathAndStatus (state) {
   if (state.log === env.lastLogID) ;
@@ -42,8 +39,7 @@ function updatePathAndStatus (state) {
           margin-right: 4px; vertical-align: middle;"></span
         ><input class="form-control" type="text"
           value="${ res.filename }" readonly onClick="this.select();">
-      <!-- /js generated -->`) })
-}
+      <!-- /js generated -->`) }) }
 
 function insertLogData (linesArray) {
   let [html, lineStatus] = [``, ``] 
@@ -53,8 +49,7 @@ function insertLogData (linesArray) {
       style="background-color: ${ env.logLine[val[0]][1] };">` : ``
     html += val[1] + '\n'
     html += lineStatus ? `</mark>` : ``
-    logText.append(html) })
-}
+    logText.append(html) }) }
 
 function clearLog () { logText.html('') }
 
@@ -62,8 +57,7 @@ let fadeLog = {
   out: x =>{
     setTimeout(clearLog, env.transitionTime * 0.5)
     logText.fadeOut(env.transitionTime * 0.5) },
-  in: x =>{ logText.fadeIn(env.transitionTime * 0.5) }
-}
+  in: x =>{ logText.fadeIn(env.transitionTime * 0.5) } }
 
 function displayLogSection (state, availableLines) {
   let url = `logs/${ state.log -1 }/${ state.offset -1 }:${ availableLines }:1`
@@ -78,25 +72,20 @@ function displayLogSection (state, availableLines) {
       setTimeout(x =>{
         insertLogData(res.lines)
         fadeLog.in()
-      }, env.transitionTime * 0.5) }
-  })
+      }, env.transitionTime * 0.5) } })
   .fail(err => {
     noLogsError.show()
-    logText.hide()
-  })
-}
+    logText.hide() }) }
 
 function render (availableLines) {
   availableLines = availableLines || util.determineLineCount()
   let state = getSetState()
   updatePathAndStatus(state)
-  displayLogSection(state, availableLines)
-}
+  displayLogSection(state, availableLines) }
 
 function switchToLog (id) {
   getSetState({ log: id, offset: 1 })
-  render()
-}
+  render() }
 
 function getNextOffset (state, direction, availableLines, callback) {
   let url = `logs/${ state.log -1 }/${ state.offset -1 }`
@@ -106,16 +95,14 @@ function getNextOffset (state, direction, availableLines, callback) {
       + `:${ availableLines }:${ direction }`
     $.get( subsequentUrl, subsequentRes =>{
       if (subsequentRes.lines.length === 0) getSetState(state)
-      else callback(state, res, availableLines) }) })
-}
+      else callback(state, res, availableLines) }) }) }
 
 function switchPage (direction) {
   var availableLines = util.determineLineCount()
   getNextOffset(getSetState(), direction, availableLines,
     (state, res, availableLines) =>{
       getSetState({ log: state.log, offset: res.offset +1 })
-      render(availableLines) })
-}
+      render(availableLines) }) }
 
 function lastPage () {
   let state = getSetState()
@@ -127,7 +114,9 @@ function lastPage () {
     switchPage(-1) }) }
 
 function nextPage () { switchPage(1) }
+
 function previousPage () { switchPage(-1) }
+
 function firstPage () {
   let state = getSetState()
   state.offset = 1
