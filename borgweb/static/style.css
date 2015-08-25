@@ -80,13 +80,10 @@ body {
 .btn-warning:hover,
 .btn-success:focus,
 .btn-warning:focus {
-  height: 40px;
   margin-left: 8px;
-  margin-top: 5px;
-  padding: 1px 12px 2px 14px;
   color: white;
   text-decoration: none;
-  background-position: 0 2px;
+  background-position: 0;
   background-repeat: repeat;
   background-color: #419641;
 }
