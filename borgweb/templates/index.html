@@ -1,54 +1,59 @@
 {% extends "_layout.html" %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-sm-3">
-            <ul id="log-files" class="nav nav-pills nav-stacked"></ul>
-        </div>
-        <div class="col-sm-9">
-          <div class="row">
-            <div class="col-sm-12">
-              <p id="log-path"></p>
-            </div><!-- /col-sm-12 -->
-          </div><!-- /row -->
-          <div class="row">
-            <div class="col-sm-12" id="log-viewer">
-              <div id="no-logs-error" class="jumbotron error" style="display: none;">
-                <h1>
-                  No logs found
-                </h1>
-                <hr>
-                <a href="https://borgbackup.github.io/borgweb/"><span class="label label-default">Documentation</span></a>
-                <a href="https://webchat.freenode.net/?channels=%23borgbackup"><span class="label label-default">IRC Channel</span></a>
-                <a href="mailto:borgbackup@librelist.com"><span class="label label-default">Mailinglist</span></a>
-                <a href="https://github.com/borgbackup/borgweb/issues"><span class="label label-default">Issue Tracker</span></a>
-              </div>
-              <pre id="log-text"></pre>
-            </div><!-- /col-sm-12 -->
-          </div><!-- /row -->
-          <div class="row" style="width: 100%;">
-            <div class="col-sm-12">
-              <nav>
-                <ul class="pagination">
-                  <li>
-                    <a href="#" aria-label="Previous" onClick="window.previousPage()">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <li><a href="#" aria-label="Beginning of file" id="nextPage" onClick="window.firstPage()">Beginning…</a></li>
-                  <li><a href="#" aria-label="End of file" style="color: #ccc;"
-                    id="previousPage" onClick="window.lastPage()">End of file</a></li>
-                  <li>
-                    <a href="#" aria-label="Next" onClick="window.nextPage()">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div><!-- /col-sm-12 -->
-          </div><!-- /row -->
-        </div><!-- /col-sm-9 -->
-    </div><!-- /row -->
-    <script src="{{ url_for('static', filename='bundle.js') }}"></script>
+	<div class="row">
+		<!-- log file selector, log file path, log status -->
+		<div class="col-sm-3">
+			&nbsp;
+		</div><!-- /col-sm-3 -->
+    <div class="col-sm-9">
+			<p id="log-path"></p>
+    </div><!-- /col-sm-9 -->
+	</div><!-- /row -->
+
+	<div class="row" id="content-row">
+		<!-- log file list, log text -->
+		<div class="col-sm-3" id="list-viewer">
+			<ul id="log-files" class="nav nav-pills nav-stacked"></ul>
+		</div><!-- /col-sm-3 -->
+    <div class="col-sm-9" id="log-viewer">
+      <div id="no-logs-error" class="jumbotron error">
+        <h1>
+          No logs found
+        </h1>
+        <hr>
+        <a href="https://borgbackup.github.io/borgweb/"><span class="label label-default">Documentation</span></a>
+        <a href="https://webchat.freenode.net/?channels=%23borgbackup"><span class="label label-default">IRC Channel</span></a>
+        <a href="mailto:borgbackup@librelist.com"><span class="label label-default">Mailinglist</span></a>
+        <a href="https://github.com/borgbackup/borgweb/issues"><span class="label label-default">Issue Tracker</span></a>
+      </div>
+      <pre id="log-text"></pre>
+    </div><!-- /col-sm-9 -->
+	</div><!-- /row -->
+
+	<div class="row" id="pagination-row">
+		<!-- pagination buttons -->
+		<div class="col-sm-3">
+		</div><!-- /col-sm-3 -->
+    <div class="col-sm-9">
+      <ul class="pagination">
+        <li>
+          <a href="#" aria-label="Previous" onClick="window.previousPage()">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li><a href="#" aria-label="Beginning of file" id="nextPage" onClick="window.firstPage()">Beginning…</a></li>
+        <li><a href="#" aria-label="End of file" style="color: #ccc;"
+          id="previousPage" onClick="window.lastPage()">End of file</a></li>
+        <li>
+          <a href="#" aria-label="Next" onClick="window.nextPage()">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </div><!-- /col-sm-9 -->
+	</div><!-- /row -->
+
+  <script src="{{ url_for('static', filename='bundle.js') }}"></script>
 {% endblock %}
 
