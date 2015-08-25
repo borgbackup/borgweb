@@ -13,6 +13,11 @@ body {
 #list-viewer {
 	height: 100%;
 }
+
+#log-viewer pre {
+	overflow-y: hidden;
+}
+
 #list-viewer {
 	height: 100%;
 	overflow-y: scroll;
