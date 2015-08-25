@@ -11,7 +11,7 @@ ex.log = function (what, colorCode) {
 }
 
 ex.generateBundle = function (input, output) {
-  log("Running '" + ex.log("babelify", 36) + "', '" + ex.log("mocha", 36) + "'")
+  log("Running '" + ex.log("babelify", 36) + "'")
   browserify({ debug: true })
     .transform(babelify)
     .require(input, { entry: true })
