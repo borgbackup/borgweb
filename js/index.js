@@ -4,6 +4,7 @@ var backup = require('./src/backup')
 var util = require('./src/util')
 var log = require('./src/util').log
 var logViewer = require('./src/logViewer')
+var i18n = require('./src/i18n')
 
 /**
   ~~ UI callables ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -22,6 +23,7 @@ window.lastPage = logViewer.lastPage
 */
 logViewer.updateLogFileList()
 logViewer.render()
+i18n.translate()
 
 /**
   ~~ Event listeners ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
