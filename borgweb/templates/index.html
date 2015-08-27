@@ -19,13 +19,13 @@
     <div class="col-sm-9" id="log-viewer">
       <div id="no-logs-error" class="jumbotron error">
         <h1>
-          No logs found
+          <x-i18n>No logs found</x-i18n>
         </h1>
         <hr>
-        <a href="https://borgbackup.github.io/borgweb/"><span class="label label-default">Documentation</span></a>
-        <a href="https://webchat.freenode.net/?channels=%23borgbackup"><span class="label label-default">IRC Channel</span></a>
-        <a href="mailto:borgbackup@librelist.com"><span class="label label-default">Mailinglist</span></a>
-        <a href="https://github.com/borgbackup/borgweb/issues"><span class="label label-default">Issue Tracker</span></a>
+        <a href="https://borgbackup.github.io/borgweb/"><span class="label label-default"><x-i18n>Documentation</x-i18n></span></a>
+        <a href="https://webchat.freenode.net/?channels=%23borgbackup"><span class="label label-default"><x-i18n>IRC Channel</x-i18n></span></a>
+        <a href="mailto:borgbackup@librelist.com"><span class="label label-default"><x-i18n>Mailinglist</x-i18n></span></a>
+        <a href="https://github.com/borgbackup/borgweb/issues"><span class="label label-default"><x-i18n>Mailinglist</x-i18n></span></a>
       </div>
       <pre id="log-text"></pre>
     </div><!-- /col-sm-9 -->
@@ -42,9 +42,10 @@
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        <li><a href="#" aria-label="Beginning of file" id="nextPage" onClick="window.firstPage()">Beginning…</a></li>
-        <li><a href="#" aria-label="End of file" style="color: #ccc;"
-          id="previousPage" onClick="window.lastPage()">End of file</a></li>
+        <li><a href="#" aria-label="Beginning of file" id="nextPage"
+					onClick="window.firstPage()"><x-i18n>Beginning…</x-i18n></a></li>
+        <li><a href="#" aria-label="End of file" id="previousPage"
+					onClick="window.lastPage()"><x-i18n>End of file</x-i18n></a></li>
         <li>
           <a href="#" aria-label="Next" onClick="window.nextPage()">
             <span aria-hidden="true">&raquo;</span>
