@@ -1,7 +1,7 @@
 var $ = require('jquery')
 var env = require('./env')
 var util = require('./util')
-var logViewer = require('./logViewer')
+var viewer = require('./viewer')
 
 /**
   ~~ Backup interaction ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -20,8 +20,8 @@ function pollBackupStatus (endpoint, ms, callback) {
       $('.navbar button[type=submit]').toggleClass('btn-success')
       $('.navbar button[type=submit]').toggleClass('btn-warning')
       $('.navbar button[type=submit]').text(`▶ Start Backup`)
-      $.getJSON('logs', logViewer.updateLogFileList)
-      logViewer.switchToLog(1) }
+      $.getJSON('logs', viewer.updateLogFileList)
+      viewer.switchToLog(1) }
     else {
       util.log(`Polling backup status`)
       $.getJSON('backup/status', callback)

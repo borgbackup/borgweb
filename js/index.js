@@ -3,7 +3,7 @@ var env = require('./src/env')
 var backup = require('./src/backup')
 var util = require('./src/util')
 var log = require('./src/util').log
-var logViewer = require('./src/logViewer')
+var viewer = require('./src/viewer')
 var i18n = require('./src/i18n')
 
 /**
@@ -12,17 +12,17 @@ var i18n = require('./src/i18n')
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 window.startBackup = backup.startBackup
-window.switchToLog = logViewer.switchToLog
-window.nextPage = logViewer.nextPage
-window.previousPage = logViewer.previousPage
-window.firstPage = logViewer.firstPage
-window.lastPage = logViewer.lastPage
+window.switchToLog = viewer.switchToLog
+window.nextPage = viewer.nextPage
+window.previousPage = viewer.previousPage
+window.firstPage = viewer.firstPage
+window.lastPage = viewer.lastPage
 
 /**
   ~~ Site init ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-logViewer.updateLogFileList()
-logViewer.render()
+viewer.updateLogFileList()
+viewer.render()
 i18n.translate()
 
 /**
@@ -32,4 +32,4 @@ $(window).resize(function () {
   if (Date.now() - env['lastRendering'] >= env['reRenderCoolDown']) {
     log('Re-rendering')
     env['lastRendering'] = Date.now()
-    setTimeout(logViewer.render, env['reRenderCoolDown'] / 2) } })
+    setTimeout(viewer.render, env['reRenderCoolDown'] / 2) } })
