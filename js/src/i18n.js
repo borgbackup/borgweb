@@ -16,17 +16,18 @@ function replaceMarkedTexts (translations) {
 	let i18nElements = document.getElementsByTagName('x-i18n')
 	translateAttribute(i18nElements, 'innerHTML', translations) }
 
-function replaceTitleTexts (translations) {
+function replaceAttrTexts (attr, translations) {
 	// replace `title` attribute texts
 	let i18nElements = document.getElementsByClassName('i18n')
-	translateAttribute(i18nElements, 'title', translations) }
+	translateAttribute(i18nElements, attr, translations) }
 
 function translate () {
 	let url = 'static/i18n/' + lang + '.json'
 	if (notEnglish) {
 		$.get(url, translations =>{
 			replaceMarkedTexts(translations)
-			replaceTitleTexts(translations) })
+			replaceAttrTexts('title', translations)
+			replaceAttrTexts('aria-label', translations) })
 		.fail(() => {
 			log(`Translation missing for '${ lang }',
 				help out on Github!`) }) } }
