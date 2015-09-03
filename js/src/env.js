@@ -20,5 +20,6 @@ module.exports = {
   lastDirection: null,
   nextOffset: null,
   lastRendering: 0,
-  reRenderCoolDown: 300
+  reRenderCoolDown: 300,
+  fetchRecentLogsStatus: 10
 }

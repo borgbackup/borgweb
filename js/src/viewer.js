@@ -10,12 +10,33 @@ let isInt = util.isInt
 let logText = $('#log-text')
 let noLogsError = $('#no-logs-error')
 
+function setListItemStatus () {
+  for (let i = 0; i < env.fetchRecentLogsStatus; i++) {
+    $.getJSON('logs/' + i, res =>{
+      let search = `#log-${i} .glyphicon`
+      let elem = $(search)
+      elem.css('color', env.icon[res.status][1])
+      elem.removeClass('glyphicon-time')
+      elem.addClass(`glyphicon-${ env.icon[res.status][0]}`) }) } }
+
 function updateLogFileList () {
   let logFilesListHTML = []
   $.getJSON('logs', res =>{
+    let i = 0
     $.each(res.files, (key, value) =>{
-      logFilesListHTML += `<li><a onClick="window.switchToLog(${ value[0] +1 })"
-        id="log-${ value[0] }">${ value[1] }</a></li>` })
+      let insert = (i < env.fetchRecentLogsStatus)
+      let indicatorHTML = insert ? `
+        <span class="glyphicon glyphicon-time list-status-indicator"
+          aria-hidden="true"></span>` : ''
+      logFilesListHTML += `
+        <li>
+          <a onClick="window.switchToLog(${ value[0] +1 })" id="log-${ value[0] }">
+            ${ indicatorHTML }
+            ${ value[1] }
+          </a>
+        </li>`
+      i++ })
+      setListItemStatus()
     $('#log-files').html(logFilesListHTML) }) }
 
 function getSetState (state) {
