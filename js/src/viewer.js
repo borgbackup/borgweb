@@ -41,7 +41,8 @@ function updateLogFileList () {
         </li>`
       i++ })
       setListItemStatus()
-    $('#log-files').html(logFilesListHTML) }) }
+    $('#log-files').html(logFilesListHTML)
+    highlightListEntry(0) }) }
 
 function getSetState (state) {
   state = state || {}
