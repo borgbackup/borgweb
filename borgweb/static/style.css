@@ -51,6 +51,9 @@ body {
   color: #3c8b3c;
   cursor: pointer;
 }
+a.shown-log {
+  background-color: #EEE;
+}
 
 #log-path {
   height: 36px;

@@ -10,6 +10,10 @@ let isInt = util.isInt
 let logText = $('#log-text')
 let noLogsError = $('#no-logs-error')
 
+function highlightListEntry (id) {
+  $('.shown-log').toggleClass('shown-log')
+  $(`#log-${ id }`).toggleClass('shown-log') }
+
 function setListItemStatus () {
   for (let i = 0; i < env.fetchRecentLogsStatus; i++) {
     $.getJSON('logs/' + i, res =>{
@@ -60,7 +64,8 @@ function updatePathAndStatus (state) {
           margin-right: 4px; vertical-align: middle;"></span
         ><input class="form-control" type="text"
           value="${ res.filename }" readonly onClick="this.select();">
-      <!-- /js generated -->`) }) }
+      <!-- /js generated -->`)
+    highlightListEntry(state.log -1) }) }
 
 function insertLogData (linesArray) {
   let [html, lineStatus] = [``, ``] 
