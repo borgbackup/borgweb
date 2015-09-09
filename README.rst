@@ -2,7 +2,7 @@ What is BorgWeb?
 ----------------
 BorgWeb is a browser-based user interface for `Borg Backup <https://borgbackup.github.io/borgbackup/>`_.
 
-.. image:: https://cdn.pbrd.co/images/vTvCjl7.png
+.. image:: https://cdn.pbrd.co/images/vYSNCBV.png
   :alt: Screenshot of BorgWeb
 
 
