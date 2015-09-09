@@ -42,7 +42,8 @@ function updateLogFileList () {
       i++ })
       setListItemStatus()
     $('#log-files').html(logFilesListHTML)
-    highlightListEntry(0) }) }
+    highlightListEntry(0)
+    updatePathAndStatus(0) }) }
 
 function getSetState (state) {
   state = state || {}
@@ -54,9 +55,9 @@ function getSetState (state) {
     `#log:${ anchor.log };offset:${ anchor.offset }`
   return anchor }
 
-function updatePathAndStatus (state) {
-  if (state.log === env.lastLogID) ;
-  else $.getJSON('logs/' + (+state.log -1), function (res) {
+function updatePathAndStatus (id) {
+  if ((id + 1) === env.lastLogID) ;
+  else $.getJSON('logs/' + id, function (res) {
     $('#log-path').html(`
       <!-- js generated -->
         <span class="glyphicon glyphicon-${ env.icon[res.status][0] }"
@@ -66,7 +67,7 @@ function updatePathAndStatus (state) {
         ><input class="form-control" type="text"
           value="${ res.filename }" readonly onClick="this.select();">
       <!-- /js generated -->`)
-    highlightListEntry(state.log -1) }) }
+    highlightListEntry(id) }) }
 
 function insertLogData (linesArray) {
   let [html, lineStatus] = [``, ``] 
@@ -107,7 +108,7 @@ function displayLogSection (state, availableLines) {
 function render (availableLines) {
   availableLines = availableLines || util.determineLineCount()
   let state = getSetState()
-  updatePathAndStatus(state)
+  updatePathAndStatus(state.log - 1)
   displayLogSection(state, availableLines) }
 
 function switchToLog (id) {
