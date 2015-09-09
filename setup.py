@@ -40,9 +40,10 @@ setup(
     packages=find_packages(),
     package_data={
         'borgweb': [
-            'static/*.*',  # do NOT match the directories bootstrap and fonts!
+            'static/*.*',  # does NOT match subdirectories!
             'static/bootstrap/*',
             'static/fonts/*',
+            'static/i18n/*',
             'templates/*',
         ],
     },
