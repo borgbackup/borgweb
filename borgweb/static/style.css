@@ -31,12 +31,12 @@ body {
   border-bottom-right-radius: 0;
 }
 .list-status-indicator {
-  font-size: 34px;
+  font-size: 18px;
   color: #ccc;
   display: block;
   float: left;
-  margin-left: -9px;
-  margin-top: -5px;
+  margin-left: 0;
+  margin-top: 3px;
   padding-right: 6px;
   opacity: 0.8;
 }
