@@ -1,8 +1,6 @@
 # -*- encoding: utf-8 *-*
 import sys
 
-import versioneer
-
 min_python = (3, 2)
 if sys.version_info < min_python:
     print("BorgWeb requires Python %d.%d or later" % min_python)
@@ -15,7 +13,7 @@ with open('README.rst', 'r') as fd:
 
 setup(
     name='borgweb',
-    version=versioneer.get_version(),
+    use_scm_version=dict(write_to='borgweb/_version.py'),
     author='The Borg Collective (see AUTHORS file)',
     author_email='borgbackup@librelist.com',
     url='https://borgweb.github.io/',
@@ -54,7 +52,7 @@ setup(
             'borgweb = borgweb.app:main',
         ]
     },
-    cmdclass=versioneer.get_cmdclass(),
+    setup_requires=['setuptools_scm>=1.7'],
     install_requires=[
         'flask',
     ],

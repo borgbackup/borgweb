@@ -12,3 +12,4 @@ env
 js/node_modules
 logs
 repo
+borgweb/_version.py
