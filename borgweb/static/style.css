@@ -50,9 +50,12 @@ body {
   margin-bottom: 12px;
 }
 #log-files li a {
-  color: #555;
+  color: #333;
   cursor: pointer;
-} 
+}
+#log-files li a:hover {
+  background-color: #E6E6E6;
+}
 a.shown-log {
   background-color: #E6E6E6;
 }
@@ -61,6 +64,7 @@ a.shown-log {
   height: 36px;
   margin-top: 0;
   font-size: 20px;
+  color: #333 !important;
   padding-left: 9px;
   padding-bottom: 2px;
   border-bottom: 1px solid #ccc;
@@ -74,6 +78,7 @@ a.shown-log {
 
 #log-text {
   height: 100%;
+  color: black;
   white-space: pre-wrap;
   line-height: 18px;
 }
