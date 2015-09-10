@@ -1,8 +1,31 @@
 BorgWeb Changelog
 =================
 
+Version 0.2.0
+-------------
+
+Fixes:
+- update path/status line after running a backup
+- highlight the currently shown log, fixes #87
+- when no logs are present, display URLs etc., fixes #82
+- removed unused dependency (cython)
+- don't hardcode the name `borg`, fixes #76
+- fixed `documentation` link
+
+New features:
+- UI improvements:
+  - misc. UI/UX improvements
+  - show backup status in log list
+  - added scrollbar for logfile list
+- translation infrastructure + de_DE translation, #85
+- use setuptools_scm instead of versioneer
+
+Other changes:
+- updated and improved docs
+
 
 Version 0.1.4
 -------------
+
 First (working) pypi release.
 
