@@ -50,11 +50,11 @@ body {
   margin-bottom: 12px;
 }
 #log-files li a {
-  color: #3c8b3c;
+  color: #555;
   cursor: pointer;
-}
+} 
 a.shown-log {
-  background-color: #EEE;
+  background-color: #E6E6E6;
 }
 
 #log-path {
