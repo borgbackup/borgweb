@@ -54,6 +54,7 @@ setup(
     },
     setup_requires=['setuptools_scm>=1.7'],
     install_requires=[
+        'werkzeug<0.11', # pin feature is broken in 0.11 & py3
         'flask',
     ],
 )
