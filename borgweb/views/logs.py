@@ -12,28 +12,25 @@ SUCCESS, INFO, WARNING, DANGER = 'success', 'info', 'warning', 'danger'
 
 
 def overall_classifier(f):
-    # TODO: we need sane logging with log levels, sane return codes, logging
-    #       of return codes in Borg before this can be really useful.
-    # we expect the most interesting stuff at the end of the log file:
     end = f.seek(0, os.SEEK_END)
     f.seek(max(0, end - 1024), os.SEEK_SET)
     lines = [line.rstrip('\n') for line in f.readlines()]
     f.seek(0, os.SEEK_SET)
-    classifications = set([line_classifier(line) for line in lines[1:]])
-    for cls in DANGER, WARNING, SUCCESS:
-        if cls in classifications:
-            return cls
-    return DANGER  # something strange happened (empty log?)
+    try:
+        line = lines[-1]
+    except IndexError:
+        return DANGER  # something strange happened, empty log?
+    if line.startswith('terminating with'):
+        if line.endswith('rc 0'):
+            return SUCCESS
+        if line.endswith('rc 1'):
+            return WARNING
+    return DANGER  # rc == 2 or other, or no '--show-rc' given. 
 
 
 def line_classifier(line):
-    # TODO: we need sane logging with log levels, sane return codes, logging
-    #       of return codes in Borg before this can be really useful.
-    if line.startswith('borg: Exiting with failure status due to previous errors'):
-        return DANGER
-    if line.startswith('borg: '):
-        return WARNING
-    return SUCCESS
+    # TODO: we need sane logging with log levels in Borg before this can be useful.
+    return INFO
 
 
 def _get_logs():
