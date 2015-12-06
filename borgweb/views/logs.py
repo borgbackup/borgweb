@@ -13,11 +13,11 @@ SUCCESS, INFO, WARNING, DANGER = 'success', 'info', 'warning', 'danger'
 
 def overall_classifier(f):
     end = f.seek(0, os.SEEK_END)
-    f.seek(max(0, end - 1024), os.SEEK_SET)
-    lines = [line.rstrip('\n') for line in f.readlines()]
+    f.seek(max(0, end - 250), os.SEEK_SET)  # len(last log line) < 250
     f.seek(0, os.SEEK_SET)
+    lines = f.readlines()
     try:
-        line = lines[-1]
+        line = lines[-1].rstrip('\n')
     except IndexError:
         return DANGER  # something strange happened, empty log?
     try:
