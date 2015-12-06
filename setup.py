@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 *-*
 import sys
 
-min_python = (3, 2)
+min_python = (3, 3)
 if sys.version_info < min_python:
     print("BorgWeb requires Python %d.%d or later" % min_python)
     sys.exit(1)
