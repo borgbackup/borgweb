@@ -34,8 +34,16 @@ def overall_classifier(f):
 
 
 def line_classifier(line):
-    # TODO: we need sane logging with log levels in Borg before this can be useful.
-    return INFO
+    try:
+        level = line.split(" ", 3)[2]  # get level from "date time level msg"
+    except IndexError:
+        # unexpected log line format
+        level = 'ERROR'
+    if level == 'INFO':
+        return INFO
+    if level == 'WARNING':
+        return WARNING
+    return DANGER
 
 
 def _get_logs():
