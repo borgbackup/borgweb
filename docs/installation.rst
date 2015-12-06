@@ -6,7 +6,7 @@ Installation
 
 |project_name| requires:
 
-* Python_ >= 3.2
+* Python_ >= 3.3
 * some python dependencies, see install_requires in setup.py
 
 Currently, only installation from git repo checkout is supported.
