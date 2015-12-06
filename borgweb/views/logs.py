@@ -20,6 +20,11 @@ def overall_classifier(f):
         line = lines[-1]
     except IndexError:
         return DANGER  # something strange happened, empty log?
+    try:
+        line = line.split(" ", 3)[3]  # get msg from "date time level msg"
+    except IndexError:
+        # unexpected log line format
+        return DANGER
     if line.startswith('terminating with'):
         if line.endswith('rc 0'):
             return SUCCESS
