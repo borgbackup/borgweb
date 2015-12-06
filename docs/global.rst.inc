@@ -9,5 +9,4 @@
 .. _issue tracker: https://github.com/borgbackup/borgweb/issues
 .. _Python: http://www.python.org/
 .. _virtualenv: https://pypi.python.org/pypi/virtualenv/
-.. _librelist: http://librelist.com/
 
