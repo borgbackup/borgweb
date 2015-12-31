@@ -14,7 +14,7 @@ module.exports = {
     success: null,
     warning: ['warning', '#fcf8e3'],
     danger: ['danger', '#f2dede'] },
-  
+
   lastRun: 0,
   lastLogID: null,
   lastDirection: null,

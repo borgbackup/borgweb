@@ -9,14 +9,17 @@ function log () {
   var args = Array.prototype.slice.call(arguments)
   var time = '[' + dateformat(new Date(), 'HH:MM:ss') + ']'
   args.unshift(time)
-  console.log.apply(console, args);
-  return this }
+  console.log.apply(console, args)
+  return this
+}
 
 function isInt (n) {
-  return n % 1 === 0 }
+  return n % 1 === 0
+}
 
 function success (data) {
-  logFiles = data.log_files }
+  logFiles = data.log_files
+}
 
 function parseAnchor () {
   var anchor = window.location.hash.slice(1)
@@ -25,15 +28,19 @@ function parseAnchor () {
     var partsParsed = {}
     parts.forEach(function (e) {
       var pair = e.split(':')
-      partsParsed[pair[0]] = pair[1] })
-    return partsParsed }
-  else {
+      partsParsed[pair[0]] = pair[1]
+    })
+    return partsParsed
+  } else {
     log('Anchor not available')
-    return {'log': 0} } }
+    return {'log': 0}
+  }
+}
 
 function determineLineCount () {
   let availableLines = Math.floor($('#log-text').height() / 18)
-  return availableLines }
+  return availableLines
+}
 
 module.exports = {
   log: log,

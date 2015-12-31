@@ -11,17 +11,17 @@ var files = {
 }
 var buildID = 1
 var newBuildLog = function () {
-  log("Build # " + lib.log (buildID++, 1)
-  + " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~") }
+  log('Build # ' + lib.log(buildID++, 1) +
+    ' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~') }
 
-gulp.task ('watch', function () {
-  newBuildLog(); browserSync.init({ proxy: 'localhost:5000', open: false })
+gulp.task('watch', function () {
+  newBuildLog(); browserSync.init({proxy: 'localhost:5000', open: false })
   lib.generateBundle(files.js, files.jsBndl, true)
-    
+
   gulp.watch([files.js, 'src/**/*.js'], function (ev) {
-    if (ev.type == 'changed') {
+    if (ev.type === 'changed') {
       newBuildLog()
-      log("Changed: " + ev.path)
+      log('Changed: ' + ev.path)
       var ret = lib.generateBundle(files.js, files.jsBndl)
       setTimeout(function () { browserSync.reload() }, 150) // todo
       return ret

@@ -1,10 +1,9 @@
 var $ = require('jquery')
-var env = require('./src/env')
 var backup = require('./src/backup')
-var util = require('./src/util')
+var env = require('./src/env')
+var i18n = require('./src/i18n')
 var log = require('./src/util').log
 var viewer = require('./src/viewer')
-var i18n = require('./src/i18n')
 
 /**
   ~~ UI callables ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -32,4 +31,6 @@ $(window).resize(function () {
   if (Date.now() - env['lastRendering'] >= env['reRenderCoolDown']) {
     log('Re-rendering')
     env['lastRendering'] = Date.now()
-    setTimeout(viewer.render, env['reRenderCoolDown'] / 2) } })
+    setTimeout(viewer.render, env['reRenderCoolDown'] / 2)
+  }
+})
