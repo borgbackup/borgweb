@@ -16,5 +16,5 @@ class Config(object):
     # configure it in an appropriate and secure way).
     # template placeholders like {LOG_DIR} (and other stuff set in the config)
     # will be expanded to their value before the shell command is executed.
-    BACKUP_CMD = "BORG_LOGGING_CONF=logging.conf borg create --show-rc {REPOSITORY}::{NAME}-{LOCALTIME} . >{LOG_DIR}/{NAME}-{LOCALTIME} 2>&1 </dev/null"
+    BACKUP_CMD = "BORG_LOGGING_CONF=logging.conf borg create --list --stats --show-version --show-rc {REPOSITORY}::{NAME}-{LOCALTIME} /etc >{LOG_DIR}/{NAME}-{LOCALTIME} 2>&1 </dev/null"
 
