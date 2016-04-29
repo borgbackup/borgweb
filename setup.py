@@ -16,7 +16,7 @@ setup(
     use_scm_version=dict(write_to='borgweb/_version.py'),
     author='The Borg Collective (see AUTHORS file)',
     author_email='borgbackup@python.org',
-    url='https://borgbackup.github.io/borgweb/',
+    url='https://borgweb.readthedocs.io/',
     description='Browser-based user interface for BorgBackup',
     long_description=long_description,
     license='BSD',
