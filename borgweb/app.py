@@ -5,6 +5,8 @@ from flask import g as flaskg
 
 from .views import blueprint
 
+DEBUG = False
+
 
 def err404(error):
     return render_template('error.html', error=error), 404
@@ -27,7 +29,7 @@ def create_app():
 
 def main():
     application = create_app()
-    application.run(debug=True)
+    application.run(debug=DEBUG)
 
 
 if __name__ == '__main__':
