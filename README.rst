@@ -1,13 +1,14 @@
-What is BorgWeb?
-----------------
-BorgWeb is a browser-based user interface for `Borg Backup <https://borgbackup.github.io/borgbackup/>`_.
-
 .. image:: https://cdn.pbrd.co/images/vYSNCBV.png
   :alt: Screenshot of BorgWeb
 
+What is BorgWeb?
+================
+
+BorgWeb is a browser-based user interface for `Borg Backup <https://borgbackup.github.io/borgbackup/>`_.
 
 Main features
-~~~~~~~~~~~~~
+-------------
+
 - BorgWeb (the web service) usually runs on the machine that is backed up with
   BorgBackup. You can use a web browser to access BorgWeb from the same
   machine or from another machine.
@@ -18,6 +19,15 @@ Main features
   * review backup log files
   * start a backup
   
+
+Links
+=====
+
+* `Main Web Site <https://borgbackup.github.io/borgweb/>`_
+* `PyPI packages <https://pypi.python.org/pypi/borgweb/>`_
+* `Github <https://github.com/borgbackup/borgweb/>`_
+* `Issue Tracker <https://github.com/borgbackup/borgweb/issues/>`_
+
 
 Notes
 -----
