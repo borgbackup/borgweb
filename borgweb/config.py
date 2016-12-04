@@ -2,7 +2,7 @@ class Config(object):
     """This is the basic configuration class for BorgWeb."""
 
     #: builtin web server configuration
-    HOST = '127.0.0.1'  # use 0.0.0.0 to bind to all interfaces
+    HOST = '0.0.0.0'  # use 0.0.0.0 to bind to all interfaces
     PORT = 5000  # ports < 1024 need root
     DEBUG = False  # if True, enable reloader and debugger
 
