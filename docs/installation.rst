@@ -53,4 +53,4 @@ The configuration file must only have lines like this (and NO indentation)::
 
 See borgweb/config.py for the currently supported keys and example values.
 
-Borg does by default not create log files. In order to create logs, the output of Borg must be redirected to file.
+Borg does by default not create log files. In order to create logs, the output of Borg must be redirected to a file.
