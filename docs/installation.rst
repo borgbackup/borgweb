@@ -52,3 +52,5 @@ The configuration file must only have lines like this (and NO indentation)::
   KEY = value  # KEY must be all-uppercase, valid python syntax
 
 See borgweb/config.py for the currently supported keys and example values.
+
+Borg does by default not create log files. In order to create logs, the output of Borg must be redirected to a file.
