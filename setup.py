@@ -57,6 +57,6 @@ setup(
     },
     setup_requires=['setuptools_scm>=1.7'],
     install_requires=[
-        'flask<1.0',
+        'flask>=0.7',  # >= 0.10 required for python 3
     ],
 )
