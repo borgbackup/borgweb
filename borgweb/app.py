@@ -20,7 +20,7 @@ def create_app():
     app.register_blueprint(blueprint)
 
     app.jinja_env.globals['flaskg'] = flaskg
-    app.error_handler_spec[None][404] = err404
+    app.register_error_handler(404, err404)
 
     return app
 
