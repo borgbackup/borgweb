@@ -1,6 +1,42 @@
 BorgWeb Changelog
 =================
 
+Version 0.x.x (not released yet)
+--------------------------------
+
+Fixes:
+
+- fix flask>=1.0 compatibility, #116
+- disconnect stdin from console, so it does not show progress
+
+New features:
+
+- add builtin web server configurability
+- add some options to borg create command
+
+  - --list so all files are listed
+  - --stats to see some statistics
+  - --show-version to see the borg version
+  - --show-rc to see return code of borgbackup
+- use a logging configuration
+- adapt line and overall classifier for new log line format
+- overall classifier: just look at terminating with ... rc X,
+  X = 0 -> SUCCESS, X = 1 -> WARNING, other -> DANGER
+
+Other changes:
+
+- drop python 3.3 support, add 3.5 and 3.6 support
+- manifest is maintained via setuptools_scm, #121
+- remove remainders of versioneer, #120
+- disable flask debugger
+- docs:
+
+  - update website / docs link and mailing list info
+  - update installation.rst about how to create borg logfiles, #110
+  - refresh theme (use same style as borg docs)
+  - move sidebar links into docs
+
+
 Version 0.2.0
 -------------
 
