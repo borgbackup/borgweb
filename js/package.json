@@ -25,6 +25,7 @@
   "homepage": "https://github.com/borgbackup/borgweb#readme",
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.51",
+    "@babel/preset-env": "^7.0.0-beta.51",
     "babelify": "^9.0.0",
     "browser-sync": "^2.24.5",
     "browserify": "^16.2.2",
