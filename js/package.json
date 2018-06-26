@@ -24,17 +24,18 @@
   },
   "homepage": "https://github.com/borgbackup/borgweb#readme",
   "devDependencies": {
-    "babelify": "^6.1.2",
-    "browser-sync": "^2.7.13",
-    "browserify": "^10.2.4",
+    "@babel/core": "^7.0.0-beta.51",
+    "babelify": "^9.0.0",
+    "browser-sync": "^2.24.5",
+    "browserify": "^16.2.2",
     "dateformat": "^1.0.11",
-    "gulp": "^3.9.0",
+    "gulp": "^4.0.0",
     "gulp-util": "^3.0.5",
     "minifyify": "^7.0.1",
     "prependify": "^1.1.4"
   },
   "dependencies": {
     "bootstrap": "^3.3.5",
-    "jquery": "^2.1.4"
+    "jquery": "^3.3.1"
   }
 }
