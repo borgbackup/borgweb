@@ -4,7 +4,7 @@ logs view
 
 import os
 
-from flask import current_app, render_template, jsonify, abort
+from flask import current_app, render_template, jsonify, abort, request
 
 from . import blueprint
 
@@ -30,7 +30,7 @@ def overall_classifier(f):
             return SUCCESS
         if line.endswith('rc 1'):
             return WARNING
-    return DANGER  # rc == 2 or other, or no '--show-rc' given. 
+    return DANGER  # rc == 2 or other, or no '--show-rc' given.
 
 
 def line_classifier(line):
@@ -46,8 +46,8 @@ def line_classifier(line):
     return DANGER
 
 
-def _get_logs():
-    log_dir = current_app.config['LOG_DIR']
+def _get_logs(repo):
+    log_dir = current_app.config['LOG_DIR'] + "/" + repo + "/"
     log_dir = os.path.abspath(log_dir)
     try:
         log_files = os.listdir(log_dir)
@@ -101,8 +101,8 @@ def _get_log_lines(log_dir, log_file, offset, linecount=None, direction=1):
     return log_file, offset, log_lines
 
 
-@blueprint.route('/logs/<int:index>/<offset>:<linecount>:<direction>')
-def get_log_fragment(index, offset, linecount, direction):
+@blueprint.route('/logs/<string:repo>/<int:index>/<offset>:<linecount>:<direction>')
+def get_log_fragment(repo, index, offset, linecount, direction):
     try:
         offset = int(offset)
     except ValueError:
@@ -117,7 +117,7 @@ def get_log_fragment(index, offset, linecount, direction):
             raise ValueError
     except ValueError:
         direction = 1
-    log_dir, log_files = _get_logs()
+    log_dir, log_files = _get_logs(repo)
     try:
         log_file = log_files[index]
     except IndexError:
@@ -127,9 +127,9 @@ def get_log_fragment(index, offset, linecount, direction):
     return jsonify(dict(lines=log_lines, offset=offset))
 
 
-@blueprint.route('/logs/<int:index>')
-def get_log(index):
-    log_dir, log_files = _get_logs()
+@blueprint.route('/logs/<string:repo>/<int:index>')
+def get_log(repo, index):
+    log_dir, log_files = _get_logs(repo)
     try:
         log_file = log_files[index]
     except IndexError:
@@ -142,8 +142,8 @@ def get_log(index):
         return jsonify(dict(filename=log_file, status=status, length=length))
 
 
-@blueprint.route('/logs')
-def get_logs():
-    log_dir, log_files = _get_logs()
+@blueprint.route('/logs/<string:repo>')
+def get_logs(repo):
+    log_dir, log_files = _get_logs(repo)
     return jsonify(dict(dir=log_dir,
                         files=list(enumerate(log_files))))

@@ -12,11 +12,14 @@
 	</div><!-- /row -->
 
 	<div class="row" id="content-row">
-		<!-- log file list, log text -->
-		<div class="col-sm-3" id="list-viewer">
-			<ul id="log-files" class="nav nav-pills nav-stacked"></ul>
-		</div><!-- /col-sm-3 -->
-    <div class="col-sm-9" id="log-viewer">
+	<!-- log file list, log text -->
+	<div class="col-sm-3" id="list-viewer">
+		<ul id="repo-list" class="nav nav-pills nav-stacked"></ul>
+	</div><!-- /col-sm-3 -->
+	<div class="col-sm-3" id="list-viewer">
+		<ul id="log-files" class="nav nav-pills nav-stacked"></ul>
+	</div><!-- /col-sm-3 -->
+    <div class="col-sm-6" id="log-viewer">
       <div id="no-logs-error" class="jumbotron error">
         <h1>
           <x-i18n>No logs found</x-i18n>
@@ -33,9 +36,9 @@
 
 	<div class="row" id="pagination-row">
 		<!-- pagination buttons -->
-		<div class="col-sm-3">
+		<div class="col-sm-6">
 		</div><!-- /col-sm-3 -->
-    <div class="col-sm-9">
+    <div class="col-sm-6">
       <ul class="pagination">
         <li>
           <a href="#" aria-label="Previous" onClick="window.previousPage()">
@@ -57,4 +60,3 @@
 
   <script src="{{ url_for('static', filename='bundle.js') }}"></script>
 {% endblock %}
-

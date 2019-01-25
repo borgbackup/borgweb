@@ -2,12 +2,12 @@ class Config(object):
     """This is the basic configuration class for BorgWeb."""
 
     #: builtin web server configuration
-    HOST = '127.0.0.1'  # use 0.0.0.0 to bind to all interfaces
+    HOST = '0.0.0.0'  # use 0.0.0.0 to bind to all interfaces
     PORT = 5000  # ports < 1024 need root
     DEBUG = False  # if True, enable reloader and debugger
 
     #: borg / borgweb configuration
-    LOG_DIR = 'logs'
+    LOG_DIR = 'logs/'
     REPOSITORY = 'repo'
     NAME = 'localhost'
 
@@ -21,5 +21,15 @@ class Config(object):
     # configure it in an appropriate and secure way).
     # template placeholders like {LOG_DIR} (and other stuff set in the config)
     # will be expanded to their value before the shell command is executed.
-    BACKUP_CMD = "BORG_LOGGING_CONF=logging.conf borg create --list --stats --show-version --show-rc {REPOSITORY}::{NAME}-{LOCALTIME} /etc >{LOG_DIR}/{NAME}-{LOCALTIME} 2>&1 </dev/null"
+    BACKUP_CMD = "BORG_LOGGING_CONF=logging.conf borg create --list --stats --show-version --show-rc {REPOSITORY}::{NAME}-{LOCALTIME} /root/borgweb >{LOG_DIR}/test/{NAME}-{LOCALTIME} 2>&1 </dev/null"
 
+    BACKUP_REPOS = {
+        "test": {
+            "repo_path": "/root/repo",
+            "backup_commands": [
+                "a",
+                "b",
+                "c"
+            ]
+        }
+    }

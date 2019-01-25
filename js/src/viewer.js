@@ -7,6 +7,7 @@ let util = require('./util')
 */
 let logText = $('#log-text')
 let noLogsError = $('#no-logs-error')
+let currentRepo = "";
 
 function highlightListEntry (id) {
   $('.shown-log').toggleClass('shown-log')
@@ -15,7 +16,7 @@ function highlightListEntry (id) {
 
 function setListItemStatus () {
   for (let i = 0; i < env.fetchRecentLogsStatus; i++) {
-    $.getJSON('logs/' + i, res => {
+    $.getJSON('logs/' + currentRepo + "/" + i, res => {
       let search = `#log-${i} .glyphicon`
       let elem = $(search)
       elem.css('color', env.icon[res.status][1])
@@ -25,15 +26,14 @@ function setListItemStatus () {
   }
 }
 
-function updateLogFileList () {
+function updateLogFileList (repo) {
   let logFilesListHTML = []
-  $.getJSON('logs', res => {
+  $.getJSON('logs/' + repo, res => {
     let i = 0
     $.each(res.files, (key, value) => {
-      let insert = (i < env.fetchRecentLogsStatus)
-      let indicatorHTML = insert ? `
+      let indicatorHTML = `
         <span class="glyphicon glyphicon-time list-status-indicator"
-          aria-hidden="true"></span>` : ''
+          aria-hidden="true"></span>`;
       logFilesListHTML += `
         <li>
           <a onClick="window.switchToLog(${ value[0] + 1 })" id="log-${ value[0] }">
@@ -43,10 +43,32 @@ function updateLogFileList () {
         </li>`
       i++
     })
-    setListItemStatus()
+
     $('#log-files').html(logFilesListHTML)
-    highlightListEntry(0)
-    updatePathAndStatus(0)
+    if(res.files.length > 0){
+        env.fetchRecentLogsStatus = res.files.length;
+        setListItemStatus()
+    }
+
+  })
+}
+
+function updateRepoList () {
+  let repoListHtml = []
+  $.getJSON('repos', res => {
+    let i = 0
+    $.each(res, (name, value) => {
+      repoListHtml += `
+        <li>
+          <a onClick="window.getLogFiles('${ name }')" >
+            ${ name }
+          </a>
+        </li>`
+      i++
+    })
+
+    $('#repo-list').html(repoListHtml)
+
   })
 }
 
@@ -63,21 +85,22 @@ function getSetState (state) {
 }
 
 function updatePathAndStatus (id) {
-  if ((id + 1) === env.lastLogID) ;
-  else {
-    $.getJSON('logs/' + id, function (res) {
-      $('#log-path').html(`
-        <!-- js generated -->
-          <span class="glyphicon glyphicon-${ env.icon[res.status][0] }"
-            aria-hidden="true" style="font-size: 34px;
-            color: ${ env.icon[res.status][1] }; width: 42px;
-            margin-right: 4px; vertical-align: middle;"></span
-          ><input class="form-control" type="text"
-            value="${ res.filename }" readonly onClick="this.select();">
-        <!-- /js generated -->`)
-      highlightListEntry(id)
-    })
+  if ((id + 1) === env.lastLogID) {
+      return;
   }
+  $.getJSON('logs/' + currentRepo + "/" + id, function (res) {
+
+    $('#log-path').html(`
+      <!-- js generated -->
+        <span class="glyphicon glyphicon-${ env.icon[res.status][0] }"
+          aria-hidden="true" style="font-size: 34px;
+          color: ${ env.icon[res.status][1] }; width: 42px;
+          margin-right: 4px; vertical-align: middle;"></span
+        ><input class="form-control" type="text"
+          value="${ res.filename }" readonly onClick="this.select();">
+      <!-- /js generated -->`)
+    highlightListEntry(id)
+  })
 }
 
 function insertLogData (linesArray) {
@@ -105,7 +128,7 @@ let fadeLog = {
 }
 
 function displayLogSection (state, availableLines) {
-  let url = `logs/${ state.log - 1 }/${ state.offset - 1 }:${ availableLines }:1`
+  let url = `logs/` + currentRepo + "/" + `${ state.log - 1 }/${ state.offset - 1 }:${ availableLines }:1`
   $.get(url, res => {
     noLogsError.hide()
     if (state.log === env.lastLogID) {
@@ -137,11 +160,18 @@ function switchToLog (id) {
   render()
 }
 
+function getLogFiles (repo) {
+    currentRepo = repo;
+    updateLogFileList(repo);
+}
+
 function getNextOffset (state, direction, availableLines, callback) {
-  let url = `logs/${ state.log - 1 }/${ state.offset - 1 }` +
+
+  let url = `logs/` + currentRepo + "/" + `${ state.log - 1 }/${ state.offset - 1 }` +
     `:${ availableLines }:${ direction }`
+  console.log(url);
   $.get(url, res => {
-    let subsequentUrl = `logs/${ state.log - 1 }/${ res.offset + 1 }` +
+    let subsequentUrl = `logs/` + currentRepo + "/" + `${ state.log - 1 }/${ res.offset + 1 }` +
       `:${ availableLines }:${ direction }`
     $.get(subsequentUrl, subsequentRes => {
       if (subsequentRes.lines.length === 0) getSetState(state)
@@ -162,7 +192,7 @@ function switchPage (direction) {
 
 function lastPage () {
   let state = getSetState()
-  let url = `logs/${ state.log - 1 }`
+  let url = `logs/` + currentRepo + "/" + + `${ state.log - 1 }`
   $.get(url, res => {
     let logLength = res.length
     state.offset = logLength
@@ -179,12 +209,19 @@ function firstPage () {
   let state = getSetState()
   state.offset = 1
   setTimeout(x => { getSetState(state) }, 1) // prevent anchor loss
-  switchToLog(state.log)
+  // switchToLog(state.log)
+}
+
+function getCurrentRepo(){
+  return currentRepo;
 }
 
 module.exports = {
+  getCurrentRepo: getCurrentRepo,
+  updateRepoList: updateRepoList,
   render: render,
   switchToLog: switchToLog,
+  getLogFiles: getLogFiles,
   nextPage: nextPage,
   previousPage: previousPage,
   updateLogFileList: updateLogFileList,
