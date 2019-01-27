@@ -141,6 +141,11 @@ def get_log(repo, index):
         status = overall_classifier(f)
         return jsonify(dict(filename=log_file, status=status, length=length))
 
+def getLogFileStatus(log_file):
+    with open(log_file, 'r') as f:
+        length = f.seek(0, os.SEEK_END)
+        return overall_classifier(f)
+
 
 @blueprint.route('/logs/<string:repo>')
 def get_logs(repo):

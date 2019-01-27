@@ -13,6 +13,8 @@ var viewer = require('./src/viewer')
 window.startBackup = backup.startBackup
 window.switchToLog = viewer.switchToLog
 window.getLogFiles = viewer.getLogFiles
+window.viewBackups = viewer.viewBackups
+window.viewRepositories = viewer.viewRepositories
 window.nextPage = viewer.nextPage
 window.previousPage = viewer.previousPage
 window.firstPage = viewer.firstPage
@@ -21,7 +23,7 @@ window.lastPage = viewer.lastPage
 /**
   ~~ Site init ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-viewer.updateRepoList()
+viewer.viewBackups()
 i18n.translate()
 
 /**

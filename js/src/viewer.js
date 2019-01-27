@@ -28,14 +28,15 @@ function setListItemStatus () {
 
 function updateLogFileList (repo) {
   let logFilesListHTML = []
+  let indicatorHTML = `
+    <span class="glyphicon glyphicon-time list-status-indicator"
+      aria-hidden="true"></span>`;
+
   $.getJSON('logs/' + repo, res => {
     let i = 0
     $.each(res.files, (key, value) => {
-      let indicatorHTML = `
-        <span class="glyphicon glyphicon-time list-status-indicator"
-          aria-hidden="true"></span>`;
       logFilesListHTML += `
-        <li>
+        <li class='list-group-item'>
           <a onClick="window.switchToLog(${ value[0] + 1 })" id="log-${ value[0] }">
             ${ indicatorHTML }
             ${ value[1] }
@@ -44,11 +45,14 @@ function updateLogFileList (repo) {
       i++
     })
 
-    $('#log-files').html(logFilesListHTML)
     if(res.files.length > 0){
         env.fetchRecentLogsStatus = res.files.length;
         setListItemStatus()
+    }else{
+      logFilesListHTML = "<li><a>" + indicatorHTML + " No Log Files</a></li>";
     }
+
+    $('#log-files').html(logFilesListHTML)
 
   })
 }
@@ -61,6 +65,8 @@ function updateRepoList () {
       repoListHtml += `
         <li>
           <a onClick="window.getLogFiles('${ name }')" >
+          <span class="glyphicon glyphicon-hdd"
+          aria-hidden="true"></span>
             ${ name }
           </a>
         </li>`
@@ -156,11 +162,19 @@ function render (availableLines) {
 }
 
 function switchToLog (id) {
+  $("#log-path").show();
   getSetState({ log: id, offset: 1 })
   render()
 }
 
+function addLogViewAdvise() {
+  $("#log-files").append("<li><a>Select a respository to see logs</a></li>");
+  $("#log-text").empty().text("Select a log to view its contents");
+}
+
 function getLogFiles (repo) {
+    $("#log-files").empty();
+    addLogViewAdvise();
     currentRepo = repo;
     updateLogFileList(repo);
 }
@@ -216,9 +230,58 @@ function getCurrentRepo(){
   return currentRepo;
 }
 
+function viewBackups(){
+  $.getJSON("backups", (data)=>{
+    let html = "";
+
+    let x = {
+      success: "",
+      error: "",
+      warning: "",
+    }
+    let jobsTemplate = "";
+    $.each(data, function(repo, backups){
+      $.each(backups, function(p, backup){
+        let status = backup.last_result;
+        let glyphicon = env.icon[status];
+
+        jobsTemplate += `<div>
+                <span class="glyphicon glyphicon-`+ glyphicon[0] +` list-status-indicator"
+                aria-hidden="true" style='color: ` + glyphicon[1] + ` '></span>
+                <button class='btn btn-primary pull-right'>Start</button>
+              <a> ${repo} - ${backup.name} </a></div><br/>`
+
+        let resultTemplate = `<div>
+                <span class="glyphicon glyphicon-`+ glyphicon[0] +` list-status-indicator"
+                aria-hidden="true" style='color: ` + glyphicon[1] + ` '></span>
+              <a> ${repo} - ${backup.name} </a></div><br/>`
+
+        x[status] += resultTemplate
+      });
+    });
+    $.each(x, function(i, tempaltes){
+      $("#" + i + "-jobs-panel").empty().append(tempaltes);
+    })
+    $("#job-list-panel").empty().append(jobsTemplate);
+  });
+  $("#backups-overview").show();
+  $("#log-viewer, #pagination-row, #log-path, #repo-list-container").hide();
+  $("#log-list-container").hide();
+}
+
+function viewRepositories(){
+  updateRepoList();
+  $("#log-files").empty();
+  addLogViewAdvise();
+  $("#backups-overview").hide();
+  $("#log-viewer, #log-list-container, #pagination-row, #repo-list-container").show();
+}
+
 module.exports = {
   getCurrentRepo: getCurrentRepo,
   updateRepoList: updateRepoList,
+  viewBackups: viewBackups,
+  viewRepositories: viewRepositories,
   render: render,
   switchToLog: switchToLog,
   getLogFiles: getLogFiles,

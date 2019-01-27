@@ -2,6 +2,7 @@ var gulp = require('gulp')
 var log = require('gulp-util').log
 var lib = require('./gulpfile.lib.js')
 var browserSync = require('browser-sync').create()
+var fs = require('fs');
 
 var files = {
   js: './index.js',
@@ -19,12 +20,11 @@ gulp.task('watch', function () {
   lib.generateBundle(files.js, files.jsBndl, true)
 
   gulp.watch([files.js, 'src/**/*.js'], function (ev) {
-    if (ev.type === 'changed') {
+      //NOTE ev was always undefined
       newBuildLog()
       log('Changed: ' + ev.path)
       var ret = lib.generateBundle(files.js, files.jsBndl)
-      setTimeout(function () { browserSync.reload() }, 150) // todo
+      setTimeout(function () { browserSync.reload()  }, 150) // todo
       return ret
-    }
   })
 })
