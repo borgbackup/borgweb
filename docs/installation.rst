@@ -34,6 +34,8 @@ To install the complete environment for development you can do the following: ::
     ./borg-env/bin/borgweb
     
     # Start the watch process and Browsersync
+    # First install gulp
+    sudo npm install --global gulp-cli
     # In another shell navigate to `borgweb/js` and enter:
     gulp watch
 
