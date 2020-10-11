@@ -22,8 +22,8 @@ function pollBackupStatus (endpoint, ms, callback) {
       $('.navbar button[type=submit]').toggleClass('btn-success')
       $('.navbar button[type=submit]').toggleClass('btn-warning')
       $('.navbar button[type=submit]').text(`▶ Start Backup`)
-      $.getJSON('logs', viewer.updateLogFileList)
-      viewer.switchToLog(1)
+      viewer.updateLogFileList(viewer.getCurrentRepo());
+      // viewer.switchToLog(1)
     } else {
       util.log(`Polling backup status`)
       $.getJSON('backup/status', callback)

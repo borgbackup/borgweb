@@ -1,38 +1,43 @@
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <ul class="nav navbar-nav" style="margin-top: 0; margin-bottom: 0;">
-                        <li>
-                            <a class="navbar-brand" style="color: white;" href="/">BorgWeb</a>
-                        </li>
-                        <li>
-                            <button type="submit" class="btn btn-success navbar-brand i18n" style="margin-left: 8px; color: white; padding: 1px 12px 2px 14px; height: 40px; margin-top: 5px;" onClick="window.startBackup()" title="Start a backup"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> <x-i18n>Start Backup</x-i18n></button>
-                        </li>
-                    </ul>
-                </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <!-- dummy:
-                        <li>
-                            <a href="/status/"><i class="fa fa-list fa-fw"></i> Status</a>
-                        </li>
-                        -->
-                        <li>
-                            <a href="https://borgweb.readthedocs.io/"
-                               class="navbar-link i18n" title="Open docs in new window" target="_blank"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> <x-i18n>Documentation</x-i18n></a>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav pull-right">
-                        <li>
-                            <a href="https://github.com/borgbackup/borgweb"
-                               class="navbar-link i18n" title="See source code on Github" target="_blank">Github</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+          <li class="sidebar-brand">
+                <a href="#">
+                    <span class="borg-green">Borg</span>Web
+                </a>
+            </li>
+            <li>
+              <a href="#"
+                 onclick="window.viewBackups()">
+                 <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
+                 Backups
+               </a>
+            </li>
+            <li>
+              <a href="#"
+                 onclick="window.viewRepositories()">
+                 <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
+                 Repositories
+               </a>
+            </li>
+            <li>
+                <a href="https://borgweb.readthedocs.io/"
+                   class="navbar-link i18n"
+                   title="Open docs in new window"
+                   target="_blank">
+                   <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                   <x-i18n>Documentation</x-i18n>
+                 </a>
+            </li>
+            <li>
+                <a href="https://github.com/borgbackup/borgweb"
+                   class="navbar-link i18n"
+                   title="See source code on Github"
+                   target="_blank">
+                   <span class="glyphicon glyphicon-wrench"></span>
+                   Github
+                 </a>
+            </li>
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
