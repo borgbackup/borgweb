@@ -1,6 +1,3 @@
-.. image:: https://cdn.pbrd.co/images/vYSNCBV.png
-  :alt: Screenshot of BorgWeb
-
 What is BorgWeb?
 ================
 
@@ -27,7 +24,7 @@ Main features
 Links
 =====
 
-* `Main Web Site <https://borgweb.readthedocs.io/en/latest/>`_
+* `Documentation <https://borgweb.readthedocs.io/en/latest/>`_
 * `PyPI packages <https://pypi.python.org/pypi/borgweb/>`_
 * `Github <https://github.com/borgbackup/borgweb/>`_
 * `Issue Tracker <https://github.com/borgbackup/borgweb/issues/>`_
