@@ -1,6 +1,3 @@
-.. image:: https://cdn.pbrd.co/images/vYSNCBV.png
-  :alt: Screenshot of BorgWeb
-
 What is BorgWeb?
 ================
 
