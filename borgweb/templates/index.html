@@ -1,60 +1,96 @@
 {% extends "_layout.html" %}
 
 {% block content %}
-	<div class="row">
-		<!-- log file selector, log file path, log status -->
-		<div class="col-sm-3">
-			&nbsp;
-		</div><!-- /col-sm-3 -->
-    <div class="col-sm-9">
-			<p id="log-path"></p>
-    </div><!-- /col-sm-9 -->
-	</div><!-- /row -->
-
-	<div class="row" id="content-row">
-		<!-- log file list, log text -->
-		<div class="col-sm-3" id="list-viewer">
-			<ul id="log-files" class="nav nav-pills nav-stacked"></ul>
-		</div><!-- /col-sm-3 -->
-    <div class="col-sm-9" id="log-viewer">
-      <div id="no-logs-error" class="jumbotron error">
-        <h1>
-          <x-i18n>No logs found</x-i18n>
-        </h1>
-        <hr>
-        <a href="https://borgweb.readthedocs.io/"><span class="label label-default"><x-i18n>Documentation</x-i18n></span></a>
-        <a href="https://webchat.freenode.net/?channels=%23borgbackup"><span class="label label-default"><x-i18n>IRC Channel</x-i18n></span></a>
-        <a href="mailto:borgbackup@python.org"><span class="label label-default"><x-i18n>Mailinglist</x-i18n></span></a>
-        <a href="https://github.com/borgbackup/borgweb/issues"><span class="label label-default"><x-i18n>Mailinglist</x-i18n></span></a>
+<!-- Page Content -->
+<div id="page-content-wrapper">
+    <div class="container-fluid" id="page-content">
+      <div class="row">
+        <div class="col-sm-offset-3 col-sm-9">
+          <p id="log-path"></p>
+        </div>
       </div>
-      <pre id="log-text"></pre>
-    </div><!-- /col-sm-9 -->
-	</div><!-- /row -->
+      <div class="row" id="content-row">
+        <div id="backups-overview">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="panel panel-success">
+                <div class="panel-heading">
+                  Completed Jobs
+                </div>
+                <div class="panel-body" id="success-jobs-panel">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="panel panel-warning">
+                <div class="panel-heading">
+                  Warnings
+                </div>
+                <div class="panel-body" id="warning-jobs-panel">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="panel panel-danger">
+                <div class="panel-heading">
+                  Failed Jobs
+                </div>
+                <div class="panel-body" id="failed-jobs-panel">
 
-	<div class="row" id="pagination-row">
-		<!-- pagination buttons -->
-		<div class="col-sm-3">
-		</div><!-- /col-sm-3 -->
-    <div class="col-sm-9">
-      <ul class="pagination">
-        <li>
-          <a href="#" aria-label="Previous" onClick="window.previousPage()">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li><a href="#" aria-label="Beginning of file" id="nextPage"
-					onClick="window.firstPage()"><x-i18n>Beginning…</x-i18n></a></li>
-        <li><a href="#" aria-label="End of file" id="previousPage"
-					onClick="window.lastPage()"><x-i18n>End of file</x-i18n></a></li>
-        <li>
-          <a href="#" aria-label="Next" onClick="window.nextPage()">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </div><!-- /col-sm-9 -->
-	</div><!-- /row -->
-
-  <script src="{{ url_for('static', filename='bundle.js') }}"></script>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  Backup Jobs
+                </div>
+                <div class="panel-body" id="job-list-panel">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="">
+          <!-- log file list, log text -->
+          <div class="col-sm-3 list-viewer well" id="repo-list-container">
+            <ul id="repo-list" class="nav nav-pills nav-stacked"></ul>
+          </div>
+          <div class="col-sm-2 list-viewer well" id="log-list-container">
+            <ul id="log-files" class="list-group "></ul>
+          </div>
+          <div class="col-sm-6" id="log-viewer">
+              <pre id="log-text"></pre>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="pagination-row">
+        <!-- pagination buttons -->
+        <div class="col-sm-5">
+        </div><!-- /col-sm-3 -->
+        <div class="col-sm-5">
+          <ul class="pagination">
+            <li>
+              <a href="#" aria-label="Previous" onClick="window.previousPage()">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li><a href="#" aria-label="Beginning of file" id="nextPage"
+              onClick="window.firstPage()"><x-i18n>Beginning…</x-i18n></a></li>
+            <li><a href="#" aria-label="End of file" id="previousPage"
+              onClick="window.lastPage()"><x-i18n>End of file</x-i18n></a></li>
+            <li>
+              <a href="#" aria-label="Next" onClick="window.nextPage()">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- <a href="#menu-toggle"  class="btn btn-secondary" id="menu-toggle">Toggle Menu</a> -->
+    </div>
+</div>
+<script src="{{ url_for('static', filename='bundle.js') }}"></script>
 {% endblock %}
-
